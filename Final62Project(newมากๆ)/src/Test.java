@@ -35,7 +35,7 @@ public class Test {
 //        GameLibrary lb2 = new GameLibrary();
         CustomerAccount cus1 = new CustomerAccount("asdas", "asdasd", AccountStatus.ACTIVE, person2);
         CustomerAccount cus2 = new CustomerAccount("customer2", "testpass", AccountStatus.ACTIVE, person3);
-
+        CustomerAccount cus3 = new CustomerAccount("customer2", "testpass", AccountStatus.ACTIVE, person3);
         AdminAccount admin = new AdminAccount("NobodyFound", "007", person);
         AdminAccount admin2 = new AdminAccount("NobodyFound", "007", person);
 

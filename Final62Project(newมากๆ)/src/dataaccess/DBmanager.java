@@ -242,6 +242,27 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-
     }
+        public static long selectLastCustomerID() {
+        long id = 0;
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = ("SELECT MAX(ID) FROM CUSTOMERACCOUNT");
+
+            rs = stm.executeQuery(query);
+
+            if (rs.next()) {
+                id = rs.getLong(1);
+                id++;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return id;
+    }
+
+    
 }
