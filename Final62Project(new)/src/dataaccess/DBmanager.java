@@ -226,18 +226,19 @@ public class DBmanager {
 
             String query = "SELECT * FROM CUSTOMERACCOUNT";
             rs = stm.executeQuery(query);
-
+            System.out.println("========================================================================");
+            System.out.println(String.format("%10s %s %20s %s %20s %s %10s " , "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY"));
+            System.out.println("========================================================================");
             while (rs.next()) {
                 id = rs.getLong("ID");
                 username = rs.getString("USERNAME");
                 password = rs.getString("PASSWORD");
                 myMoney = rs.getDouble("MYMONEY");
+                System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", id, "|", username, "|", password, "|", myMoney));
+                System.out.println("------------------------------------------------------------------------");
             }
-            System.out.println("========================================================================");
-            System.out.println(String.format("%10s %s %20s %s %20s %s %10s " , "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY"));
-            System.out.println("========================================================================");
-            System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", id, "|", username, "|", password, "|", myMoney));
-            System.out.println("------------------------------------------------------------------------");
+            
+            
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
