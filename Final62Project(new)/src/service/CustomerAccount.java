@@ -21,12 +21,7 @@ public class CustomerAccount extends Account {
         super(username, password, person);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-        if(DBmanager.selectLastCustomerID() == 1){
         this.uniqueId = GetNextID.getNext();
-        }
-        else{
-           this.uniqueId = DBmanager.selectLastCustomerID();
-        }
         callKeepCustomerInfo();
         
     }
