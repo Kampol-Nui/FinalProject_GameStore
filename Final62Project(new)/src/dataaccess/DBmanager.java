@@ -6,8 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import service.CustomerAccount;
 import service.TopupStatus;
+
 
 public class DBmanager {
 
@@ -92,23 +96,23 @@ public class DBmanager {
                     PreparedStatement pstm = con.prepareStatement(sql1);) {
                 for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
                     double myEachMoney = dataaccess.DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
-                    String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
-                    try (Statement stm = con.createStatement();) {
-
-                        stm.executeUpdate(sql3);
-                    } catch (SQLException ex) {
-
-                    }
-                    pstm.setString(1, new TimeStamp().toString());
-                    pstm.setDouble(2, ac.getUniqueId());
-                    pstm.setString(3, ac.getUsername());
-                    pstm.setString(4, ac.getMyCart().getItemInCart().get(i).getTitle());
-                    pstm.setDouble(5, ac.getMyCart().getEachGamePrice(i));
-                    pstm.setDouble(6, myEachMoney);
-
-                    pstm.executeUpdate();
-
+                     String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
+            try (Statement stm = con.createStatement();) {
+                
+                stm.executeUpdate(sql3);}catch(SQLException ex){
+                
                 }
+                    pstm.setString(1, new TimeStamp().toString());
+                pstm.setDouble(2, ac.getUniqueId());
+                pstm.setString(3, ac.getUsername());
+                pstm.setString(4, ac.getMyCart().getItemInCart().get(i).getTitle());
+                pstm.setDouble(5, ac.getMyCart().getEachGamePrice(i));
+                pstm.setDouble(6, myEachMoney);
+
+                pstm.executeUpdate();
+                    
+                }
+                
 
             } catch (SQLException ex) {
                 ex.getMessage();
@@ -230,7 +234,7 @@ public class DBmanager {
                 myMoney = rs.getDouble("MYMONEY");
             }
             System.out.println("========================================================================");
-            System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY"));
+            System.out.println(String.format("%10s %s %20s %s %20s %s %10s " , "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY"));
             System.out.println("========================================================================");
             System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", id, "|", username, "|", password, "|", myMoney));
             System.out.println("------------------------------------------------------------------------");
@@ -239,8 +243,7 @@ public class DBmanager {
             System.out.println(ex.getMessage());
         }
     }
-
-    public static long selectLastCustomerID() {
+        public static long selectLastCustomerID() {
         long id = 0;
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
@@ -261,4 +264,5 @@ public class DBmanager {
         return id;
     }
 
+    
 }
