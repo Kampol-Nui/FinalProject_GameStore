@@ -1,5 +1,5 @@
 
-import io.AllCustomer;
+//import io.AllCustomer;
 import service.AdminAccount;
 import person.Person;
 import account.AccountStatus;
@@ -94,7 +94,7 @@ public class Test {
         cus1.TopupMoney(1000);
         System.out.println(cus1.getMyMoney());
         System.out.println("");
-        //cus1.TopupMoney(2040);
+        cus2.TopupMoney(2040);
         System.out.println(cus1.getMyMoney());
 //        cus1.TopupMoney(500);
 //        System.out.println(cus1.getMyMoney());
@@ -105,7 +105,8 @@ public class Test {
 //        
         cus1.getMyLibrary().addGameFromCartToLibrary();
         System.out.println("-----------------------------------------------------------------");
-
+admin.writePurchaseHistory(cus2);
+admin.readPurchaseHistory("purchasehistory.dat",cus2);
 
 //        lb2.payGame(cus2);
 //        System.out.println("-----------------------------------------------------------------");

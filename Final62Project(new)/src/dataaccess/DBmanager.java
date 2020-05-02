@@ -265,5 +265,25 @@ public class DBmanager {
         return id;
     }
 
-    
+    public static int SelectOrderNumber(CustomerAccount ac) {
+        int ordernumber = 0;
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            //String query = ("SELECT * FROM PURCHASEHISTORY C1 WHERE C1.ORDER_NUMBER=(SELECT MAX(ORDER_NUMBER) FROM PURCHASEHISTORY C2 WHERE C1.ID = C2.ID) AND id=" + ac.getUniqueId());
+            String query2 = "SELECT COUNT(*) FROM PURCHASEHISTORY WHERE ID=" + ac.getUniqueId();
+            rs = stm.executeQuery(query2);
+
+            if (rs.next()) {
+
+                ordernumber = rs.getInt(1);
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return ordernumber;
+    }
 }
