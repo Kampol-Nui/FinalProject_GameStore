@@ -127,34 +127,7 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-//        double lastMoney;
-//        String sql1 = "INSERT INTO PURCHASEHISTORY " + "(timestamp,id,username,game,totalprice,mymoney)" + "VALUES(?,?,?,?,?)";
-//        //String sql2 = "UPDATE CUSTOMERACCOUNT set mymoney=" + ac.getMyMoney() + " WHERE id =" + ac.getUniqueId();
-//        try (Connection con = DBconnection.getConnecting();) {
-//            try (
-//                    PreparedStatement stm = con.prepareStatement(sql1);) {
-//                stm.setString(1, new TimeStamp().toString());
-//                stm.setLong(2, ac.getUniqueId());
-//                stm.setString(3, ac.getUsername());
-//                stm.setDouble(4, ac.getTopupMoney());
-//                stm.setString(5, TopupStatus.SUCCESSFUL.name());
-//                stm.executeUpdate();
-//                lastMoney = ac.getTopupMoney()+ SelectLastMoney(ac);
-//                System.out.println(lastMoney);
-//                String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + lastMoney + " WHERE id =" + ac.getUniqueId();
-//                try (Statement stmm = con.createStatement();) {
-//                    stmm.executeUpdate(sql2);
-//                    System.out.println("เติมเงินเสร็จสมบูรณ์");
-//                    
-//                } catch (SQLException ex) {
-//                    System.out.println(ex.getMessage());
-//                }
-//            } catch (SQLException ex) {
-//                ex.getMessage();
-//            }
-//        } catch (SQLException ex) {
-//            ex.getMessage();
-//        }
+
     }
 
     public static double SelectLastMoney(CustomerAccount ac) {
