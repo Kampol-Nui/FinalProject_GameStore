@@ -6,11 +6,15 @@ import account.Account;
 import dataaccess.DBconnection;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -98,6 +102,8 @@ public class AdminAccount extends Account {
             Statement stm = con.createStatement();
             FileOutputStream fos = new FileOutputStream("Purchasehistory.dat");
             BufferedOutputStream bos = new BufferedOutputStream(fos);
+            FileWriter fwt = new FileWriter("Purchasehistory.txt");
+            BufferedWriter out = new BufferedWriter(fwt);
             DataOutputStream dos = new DataOutputStream(fos)){
             ResultSet rs = null;
             rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
@@ -114,6 +120,7 @@ public class AdminAccount extends Account {
                 dos.writeUTF(game);
                 dos.writeDouble(totalprice);
                 dos.writeDouble(mymoney);
+                out.write(timestamp+" " + id+" " + username+" " + game+" " + totalprice+" " + mymoney + "\n");
             }
         
         } catch (SQLException ex) {
@@ -129,13 +136,21 @@ public class AdminAccount extends Account {
     public void readPurchaseHistory(String filename,CustomerAccount ac){
         try (FileInputStream fis = new FileInputStream(filename);
                 BufferedInputStream bis = new BufferedInputStream(fis);
-                DataInputStream dis = new DataInputStream(bis)) {
+                FileReader frd = new FileReader("Purchasehistory.txt");
+                BufferedReader rdr = new BufferedReader(frd);
+                DataInputStream dis = new DataInputStream(bis)
+                ) {
             //readcus[i] = new 
-            for (int i = 0; i < dataaccess.DBmanager.SelectOrderNumber(ac); i++) {
-                
-                System.out.println(dis.readUTF()+" "+dis.readLong()+" "+dis.readUTF()+" "+dis.readUTF()+" "+dis.readDouble()+" "+dis.readDouble());
-                
+            //rdr.read()
+            String line;
+                while ((line = rdr.readLine()) != null) {
+                System.out.println(line);
             }
+//            for (int i = 0; i < dataaccess.DBmanager.SelectOrderNumber(ac); i++) {
+//                
+//                System.out.println(dis.readUTF()+" "+dis.readLong()+" "+dis.readUTF()+" "+dis.readUTF()+" "+dis.readDouble()+" "+dis.readDouble());
+//                
+//            }
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
         }   catch (IOException ex) {
