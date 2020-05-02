@@ -105,8 +105,10 @@ public class Test {
 //        
         cus1.getMyLibrary().addGameFromCartToLibrary();
         System.out.println("-----------------------------------------------------------------");
-admin.writePurchaseHistory(cus2);
-admin.readPurchaseHistory("purchasehistory.dat",cus2);
+//admin.writePurchaseHistory(cus2);
+//admin.readPurchaseHistory("purchasehistory.dat",cus2);
+
+        
 
 //        lb2.payGame(cus2);
 //        System.out.println("-----------------------------------------------------------------");

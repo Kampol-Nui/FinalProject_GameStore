@@ -3,33 +3,16 @@ package service;
 //import io.AllCustomer;
 import person.Person;
 import account.Account;
-import dataaccess.DBconnection;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+//admin.writePurchaseHistory(cus2);
+//admin.readPurchaseHistory("purchasehistory.dat",cus2);
 public class AdminAccount extends Account {
 
     public AdminAccount(String username, String password, Person person) {
         super(username, password, person);
 
     }
-
+    
 //    public void readCustomer(AdminAccount ad, String filename) {
 //        try (FileInputStream fis = new FileInputStream(filename);
 //                BufferedInputStream bis = new BufferedInputStream(fis);
@@ -97,67 +80,67 @@ public class AdminAccount extends Account {
 //
 //    }
     
-    public void writePurchaseHistory(CustomerAccount ac){
-        try(Connection con = DBconnection.getConnecting();
-            Statement stm = con.createStatement();
-            FileOutputStream fos = new FileOutputStream("Purchasehistory.dat");
-            BufferedOutputStream bos = new BufferedOutputStream(fos);
-            FileWriter fwt = new FileWriter("Purchasehistory.txt");
-            BufferedWriter out = new BufferedWriter(fwt);
-            DataOutputStream dos = new DataOutputStream(fos)){
-            ResultSet rs = null;
-            rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
-            while(rs.next()){
-                String timestamp = rs.getString("TIMESTAMP");
-                long id = rs.getLong("ID");
-                String username = rs.getString("USERNAME");
-                String game = rs.getString("GAME");
-                double totalprice = rs.getDouble("TOTALPRICE");
-                double mymoney = rs.getDouble("MYMONEY");
-                dos.writeUTF(timestamp);
-                dos.writeLong(id);
-                dos.writeUTF(username);
-                dos.writeUTF(game);
-                dos.writeDouble(totalprice);
-                dos.writeDouble(mymoney);
-                out.write(timestamp+" " + id+" " + username+" " + game+" " + totalprice+" " + mymoney + "\n");
-            }
-        
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-    
-    }
-    
-    public void readPurchaseHistory(String filename,CustomerAccount ac){
-        try (FileInputStream fis = new FileInputStream(filename);
-                BufferedInputStream bis = new BufferedInputStream(fis);
-                FileReader frd = new FileReader("Purchasehistory.txt");
-                BufferedReader rdr = new BufferedReader(frd);
-                DataInputStream dis = new DataInputStream(bis)
-                ) {
-            //readcus[i] = new 
-            //rdr.read()
-            String line;
-                while ((line = rdr.readLine()) != null) {
-                System.out.println(line);
-            }
-//            for (int i = 0; i < dataaccess.DBmanager.SelectOrderNumber(ac); i++) {
-//                
-//                System.out.println(dis.readUTF()+" "+dis.readLong()+" "+dis.readUTF()+" "+dis.readUTF()+" "+dis.readDouble()+" "+dis.readDouble());
-//                
+//    public void writePurchaseHistory(CustomerAccount ac){
+//        try(Connection con = DBconnection.getConnecting();
+//            Statement stm = con.createStatement();
+//            FileOutputStream fos = new FileOutputStream("Purchasehistory.dat");
+//            BufferedOutputStream bos = new BufferedOutputStream(fos);
+//            FileWriter fwt = new FileWriter("Purchasehistory.txt");
+//            BufferedWriter out = new BufferedWriter(fwt);
+//            DataOutputStream dos = new DataOutputStream(fos)){
+//            ResultSet rs = null;
+//            rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
+//            while(rs.next()){
+//                String timestamp = rs.getString("TIMESTAMP");
+//                long id = rs.getLong("ID");
+//                String username = rs.getString("USERNAME");
+//                String game = rs.getString("GAME");
+//                double totalprice = rs.getDouble("TOTALPRICE");
+//                double mymoney = rs.getDouble("MYMONEY");
+//                dos.writeUTF(timestamp);
+//                dos.writeLong(id);
+//                dos.writeUTF(username);
+//                dos.writeUTF(game);
+//                dos.writeDouble(totalprice);
+//                dos.writeDouble(mymoney);
+//                out.write(timestamp+" " + id+" " + username+" " + game+" " + totalprice+" " + mymoney + "\n");
 //            }
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        }   catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+//        
+//        } catch (SQLException ex) {
+//            System.out.println(ex.getMessage());
+//        } catch (FileNotFoundException ex) {
+//            System.out.println(ex.getMessage());
+//        } catch (IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
+//    
+//    }
+    
+//    public void readPurchaseHistory(String filename,CustomerAccount ac){
+//        try (FileInputStream fis = new FileInputStream(filename);
+//                BufferedInputStream bis = new BufferedInputStream(fis);
+//                FileReader frd = new FileReader("Purchasehistory.txt");
+//                BufferedReader rdr = new BufferedReader(frd);
+//                DataInputStream dis = new DataInputStream(bis)
+//                ) {
+//            //readcus[i] = new 
+//            //rdr.read()
+//            String line;
+//                while ((line = rdr.readLine()) != null) {
+//                System.out.println(line);
+//            }
+////            for (int i = 0; i < dataaccess.DBmanager.SelectOrderNumber(ac); i++) {
+////                
+////                System.out.println(dis.readUTF()+" "+dis.readLong()+" "+dis.readUTF()+" "+dis.readUTF()+" "+dis.readDouble()+" "+dis.readDouble());
+////                
+////            }
+//        } catch (FileNotFoundException ex) {
+//            System.out.println(ex.getMessage());
+//        }   catch (IOException ex) {
+//            System.out.println(ex.getMessage());
+//        }
 
 }
     
-}
+
       

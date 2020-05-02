@@ -1,19 +1,9 @@
 
-import account.AccountStatus;
 import dataaccess.DBmanager;
 import java.util.Scanner;
-import person.Person;
-import service.CustomerAccount;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author MINI
- */
+
+
 public class AdminApplication {
 
     static int choice;
@@ -25,8 +15,8 @@ public class AdminApplication {
     static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-            adminMenu();
-  
+        adminMenu();
+
     }
 
     public static void adminMenu() {
@@ -47,5 +37,5 @@ public class AdminApplication {
         } while (choice != 0);
 
     }
-    
+
 }

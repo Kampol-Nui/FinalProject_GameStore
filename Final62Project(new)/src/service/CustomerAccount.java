@@ -1,10 +1,10 @@
 package service;
 
-import dataaccess.DBmanager;
 import genarate.GetNextID;
 import person.Person;
 import account.Account;
 import account.AccountStatus;
+import dataaccess.DBmanager;
 
 public class CustomerAccount extends Account {
 
@@ -60,7 +60,7 @@ public class CustomerAccount extends Account {
     }
 
     public void listBuyingHistory() {
-        DBmanager.SelectPurchaseHistory(this);
+        DBmanager.SelectTablePurchaseHistory(this);
     }
 
     public GameLibrary getMyLibrary() {

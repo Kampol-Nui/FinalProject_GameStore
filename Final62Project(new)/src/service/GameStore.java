@@ -1,14 +1,12 @@
 package service;
 
-
+import admin.io.ReadWritePurchaseHistoryTranscription;
 import game.GameStatus;
 import game.Game;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
-public class GameStore implements AdminService{
-
+public class GameStore implements AdminService {
 
     private ArrayList<Game> gameStore;
     private GameStatus gamestatus;
@@ -48,13 +46,13 @@ public class GameStore implements AdminService{
             }
             for (int i = 0; i < this.gameStore.size(); i++) {
                 if (this.gameStore.get(i).equals(game)) {
-                    System.out.println("มีเกมนี้อยู่แล้วบนร้านค้า "+this.name);
+                    System.out.println("มีเกมนี้อยู่แล้วบนร้านค้า " + this.name);
                     return false;
                 }
             }
             game.setStatus(GameStatus.ONSALED);
             this.gameStore.add(game);
-            System.out.println("คุณได้เพิ่มเกม "+game.getTitle()+" ไปยังร้านค้า "+this.name+"");
+            System.out.println("คุณได้เพิ่มเกม " + game.getTitle() + " ไปยังร้านค้า " + this.name + "");
             return true;
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
@@ -108,5 +106,10 @@ public class GameStore implements AdminService{
     public String toString() {
         return name;
     }
+
+//    public void printHistoryTranscription() {
+//        ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac, timestamp, 0, username, game, 0, 0);
+//        
+//    }
 
 }
