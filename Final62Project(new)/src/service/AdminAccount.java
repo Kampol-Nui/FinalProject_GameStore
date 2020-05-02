@@ -1,8 +1,9 @@
 package service;
 
-import io.AllCustomer;
+//import io.AllCustomer;
 import person.Person;
 import account.Account;
+import dataaccess.DBconnection;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -11,6 +12,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AdminAccount extends Account {
 
@@ -19,71 +26,123 @@ public class AdminAccount extends Account {
 
     }
 
-    public void readCustomer(AdminAccount ad, String filename) {
+//    public void readCustomer(AdminAccount ad, String filename) {
+//        try (FileInputStream fis = new FileInputStream(filename);
+//                BufferedInputStream bis = new BufferedInputStream(fis);
+//                DataInputStream dis = new DataInputStream(bis)) {
+//
+//            //cus = new CustomerAccount(dis.readDouble(),dis.readUTF(),dis.readUTF(),dis.readDouble());
+////            while(dis.available() > 0){
+////                double d = dis.readDouble();
+////                String n = dis.readUTF();
+////                String p = dis.readUTF();
+////                double m = dis.readDouble();
+////                System.out.println("Cus_ID = "+d+"  Cus_Username = "+n+"  Cus_Password = "+p+"  Cus_Money = "+m);
+////            //System.out.println("Cus_ID = "+dis.readDouble()+"Cus_Username = "+dis.readUTF()+"Cus_Password = "+dis.readUTF()+"Cus_Money = "+dis.readDouble());
+////            }
+//            int numOfmember = dis.readInt();
+//            AllCustomer[] readCus = new AllCustomer[numOfmember];
+//            for (int i = 0; i < numOfmember; i++) {
+//                readCus[i] = new AllCustomer(dis.readDouble(), dis.readUTF(), dis.readUTF(), dis.readDouble());
+//                System.out.println(readCus[i]);
+//
+//            }
+////            for (int i = 0; i <= dis.readInt(); i++) {
+////                
+////            System.out.println(dis.readDouble());
+////            System.out.println(dis.readUTF());
+////            System.out.println(dis.readUTF());
+////            System.out.println(dis.readDouble());
+////                System.out.println(dis.readDouble());
+////                System.out.println(dis.readUTF());
+////            System.out.println(dis.readUTF());
+////            System.out.println(dis.readDouble());
+////            }
+////                dis.readInt();
+////            System.out.println(dis.readDouble());
+////            System.out.println(dis.readUTF());
+////            System.out.println(dis.readUTF());
+////            System.out.println(dis.readDouble());}
+//        } catch (FileNotFoundException ex) {
+//            ex.getMessage();
+//        } catch (IOException ex) {
+//            ex.getMessage();
+//        }
+//    }
+//
+//    public void WriteCustomerData(AdminAccount admin, AllCustomer allcus) {
+//        try (FileOutputStream fos = new FileOutputStream("file" + "_" + ".dat");
+//                BufferedOutputStream bos = new BufferedOutputStream(fos);
+//                DataOutputStream dout = new DataOutputStream(bos)) {
+//            int numOfcus = allcus.getCus().length;
+//            //CustomerAccount [] cus = allcus.getCus();
+//            dout.writeInt(numOfcus);
+//            for (int i = 0; i < numOfcus; i++) {
+//                dout.writeDouble(allcus.getCus(i).getUniqueId());
+//                dout.writeUTF(allcus.getCus(i).getUsername());
+//                dout.writeUTF(allcus.getCus(i).getPassword());
+//                dout.writeDouble(allcus.getCus(i).getMyMoney());
+//
+//            }
+//
+//        } catch (FileNotFoundException ex) {
+//            ex.getMessage();
+//        } catch (IOException ex) {
+//            ex.getMessage();
+//        }
+//
+//    }
+    
+    public void writePurchaseHistory(CustomerAccount ac){
+        try(Connection con = DBconnection.getConnecting();
+            Statement stm = con.createStatement();
+            FileOutputStream fos = new FileOutputStream("Purchasehistory.dat");
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            DataOutputStream dos = new DataOutputStream(fos)){
+            ResultSet rs = null;
+            rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
+            while(rs.next()){
+                String timestamp = rs.getString("TIMESTAMP");
+                long id = rs.getLong("ID");
+                String username = rs.getString("USERNAME");
+                String game = rs.getString("GAME");
+                double totalprice = rs.getDouble("TOTALPRICE");
+                double mymoney = rs.getDouble("MYMONEY");
+                dos.writeUTF(timestamp);
+                dos.writeLong(id);
+                dos.writeUTF(username);
+                dos.writeUTF(game);
+                dos.writeDouble(totalprice);
+                dos.writeDouble(mymoney);
+            }
+        
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    
+    }
+    
+    public void readPurchaseHistory(String filename,CustomerAccount ac){
         try (FileInputStream fis = new FileInputStream(filename);
                 BufferedInputStream bis = new BufferedInputStream(fis);
                 DataInputStream dis = new DataInputStream(bis)) {
-
-            //cus = new CustomerAccount(dis.readDouble(),dis.readUTF(),dis.readUTF(),dis.readDouble());
-//            while(dis.available() > 0){
-//                double d = dis.readDouble();
-//                String n = dis.readUTF();
-//                String p = dis.readUTF();
-//                double m = dis.readDouble();
-//                System.out.println("Cus_ID = "+d+"  Cus_Username = "+n+"  Cus_Password = "+p+"  Cus_Money = "+m);
-//            //System.out.println("Cus_ID = "+dis.readDouble()+"Cus_Username = "+dis.readUTF()+"Cus_Password = "+dis.readUTF()+"Cus_Money = "+dis.readDouble());
-//            }
-            int numOfmember = dis.readInt();
-            AllCustomer[] readCus = new AllCustomer[numOfmember];
-            for (int i = 0; i < numOfmember; i++) {
-                readCus[i] = new AllCustomer(dis.readDouble(), dis.readUTF(), dis.readUTF(), dis.readDouble());
-                System.out.println(readCus[i]);
-
+            //readcus[i] = new 
+            for (int i = 0; i < dataaccess.DBmanager.SelectOrderNumber(ac); i++) {
+                
+                System.out.println(dis.readUTF()+" "+dis.readLong()+" "+dis.readUTF()+" "+dis.readUTF()+" "+dis.readDouble()+" "+dis.readDouble());
+                
             }
-//            for (int i = 0; i <= dis.readInt(); i++) {
-//                
-//            System.out.println(dis.readDouble());
-//            System.out.println(dis.readUTF());
-//            System.out.println(dis.readUTF());
-//            System.out.println(dis.readDouble());
-//                System.out.println(dis.readDouble());
-//                System.out.println(dis.readUTF());
-//            System.out.println(dis.readUTF());
-//            System.out.println(dis.readDouble());
-//            }
-//                dis.readInt();
-//            System.out.println(dis.readDouble());
-//            System.out.println(dis.readUTF());
-//            System.out.println(dis.readUTF());
-//            System.out.println(dis.readDouble());}
         } catch (FileNotFoundException ex) {
-            ex.getMessage();
-        } catch (IOException ex) {
-            ex.getMessage();
+            System.out.println(ex.getMessage());
+        }   catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-    }
-
-    public void WriteCustomerData(AdminAccount admin, AllCustomer allcus) {
-        try (FileOutputStream fos = new FileOutputStream("file" + "_" + ".dat");
-                BufferedOutputStream bos = new BufferedOutputStream(fos);
-                DataOutputStream dout = new DataOutputStream(bos)) {
-            int numOfcus = allcus.getCus().length;
-            //CustomerAccount [] cus = allcus.getCus();
-            dout.writeInt(numOfcus);
-            for (int i = 0; i < numOfcus; i++) {
-                dout.writeDouble(allcus.getCus(i).getUniqueId());
-                dout.writeUTF(allcus.getCus(i).getUsername());
-                dout.writeUTF(allcus.getCus(i).getPassword());
-                dout.writeDouble(allcus.getCus(i).getMyMoney());
-
-            }
-
-        } catch (FileNotFoundException ex) {
-            ex.getMessage();
-        } catch (IOException ex) {
-            ex.getMessage();
-        }
-
-    }
 
 }
+    
+}
+      
