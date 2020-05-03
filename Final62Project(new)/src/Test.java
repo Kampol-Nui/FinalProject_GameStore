@@ -6,6 +6,7 @@ import account.AccountStatus;
 import admin.io.ReadWritePurchaseHistoryTranscription;
 import service.GameStore;
 import game.Game;
+import game.GameStatus;
 import service.CustomerAccount;
 
 /*
@@ -20,116 +21,106 @@ import service.CustomerAccount;
 public class Test {
 
     public static void main(String[] args) {
-//        dataaccess.DBmanager.CreateTable();
-        GameStore gameStore = new GameStore("PROJECT GAME STORE");
-        GameStore gameStore2 = new GameStore("ORIJUN");
+//       dataaccess.DBmanager.CreateTable();
+        
+        
+
         Person person = new Person("Kumpol", "kumpol@gmail.com", "0945481112");
-        Person person2 = new Person("asds", "asdsd@gmail.com", "16545416");
-        Person person3 = new Person("test", "testt@gmail.com", "testtt");
-//        Cart c1 = new Cart("CART 1");
-//        Cart c2 = new Cart("CART 2");
+        Person person2 = new Person("Jiwview", "jiwview@gmail.com", "16545416");
+        Person person3 = new Person("John", "wick@gmail.com", "083746800");
+        Person person4 = new Person("Sarah", "adsarah@gmail.com", "058794612");
+        Person person5 = new Person("Micheal", "admicheal@gmail.com", "0946781415");
+        
+        CustomerAccount cus1 = new CustomerAccount("Kampol", "kkkkddd", AccountStatus.ACTIVE, person);
+        CustomerAccount cus2 = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE, person2);
+        CustomerAccount cus3 = new CustomerAccount("John", "Wick", AccountStatus.ACTIVE, person3);
+        
+        AdminAccount admin = new AdminAccount("NobodyFound", "007", person4);
+        AdminAccount admin2 = new AdminAccount("ADM", "123456789", person5);
+        
+        
+        GameStore gameStore = new GameStore("EPRICK");
+       
+        
+        
         Game game1 = new Game("01", "TOMB RIDER", 20);
         Game game2 = new Game("02", "RE7", 60);
         Game game3 = new Game("03", "RE8", 100);
         Game game4 = new Game("04", "RE9", 40);
-//        GameLibrary lb1 = new GameLibrary();
-//        GameLibrary lb2 = new GameLibrary();
-        CustomerAccount cus1 = new CustomerAccount("asdas", "asdasd", AccountStatus.ACTIVE, person2);
-        CustomerAccount cus2 = new CustomerAccount("customer2", "testpass", AccountStatus.ACTIVE, person3);
-        CustomerAccount cus3 = new CustomerAccount("customer2", "testpass", AccountStatus.ACTIVE, person3);
-        AdminAccount admin = new AdminAccount("NobodyFound", "007", person);
-        AdminAccount admin2 = new AdminAccount("NobodyFound", "007", person);
 
-        System.out.println("=============================TEST FOR ADMIN=========================================");
+        System.out.println("=============================TEST FOR GAMESTORE=========================================");
 
-        gameStore.addGame(admin, game1);
-        gameStore.addGame(admin, game2);
-        gameStore.addGame(admin, game3);
-        System.out.println("");
+        gameStore.addGameFrom(admin, game1);
+        gameStore.addGameFrom(admin, game2);
+        gameStore.addGameFrom(admin, game3);
+        gameStore.addGameFrom(admin, game4);
+        
+        System.out.println(gameStore.changeGameStatusFrom(admin, "RE7", GameStatus.DISCOUNTED,50));
+        
         gameStore.listGameFromStore();
-        System.out.println("");
-        gameStore.addGame(admin, game1);
+        
+        gameStore.removeGame(admin, game3);
+        
         gameStore.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        gameStore.addGame(admin, null);
+        
+        gameStore.removeGame(admin, game4);
+        
         gameStore.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        gameStore2.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        gameStore.removeGame(admin, game2);
-        gameStore.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        gameStore.removeGame(admin, game2);
-        gameStore.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        gameStore2.removeGame(admin, game4);
-        gameStore2.listGameFromStore();
-        System.out.println("-----------------------------------------------------------------");
-        System.out.println("=============================TEST FOR ADMIN=========================================");
-        System.out.println("");
-        System.out.println("=============================TEST FOR CUSTOMER=====================================================");
-        System.out.println("-----------------------------------------------------------------");
-        cus1.getMyCart().addGameToCart(gameStore, "RE8");
+        
+        System.out.println("=============================TEST FOR CART=========================================");
+        
         cus1.getMyCart().addGameToCart(gameStore, "RE7");
         cus1.getMyCart().addGameToCart(gameStore, "RE8");
-
+        cus1.getMyCart().addGameToCart(gameStore, "RE7");
+       
+        
         cus1.getMyCart().listGameFromCart();
         
-
-        System.out.println("-----------------------------------------------------------------");
-        cus2.getMyCart().addGameToCart(gameStore, "RE8");
-        cus2.getMyCart().addGameToCart(gameStore,"RE7");
-        cus2.getMyCart().addGameToCart(gameStore, "TOMB RIDER");
-
-        cus2.getMyCart().listGameFromCart();
-        System.out.println("-----------------------------------------------------------------");
-                                                        
+        cus1.getMyCart().removeGameFromCart(cus1, "RE7");
+        cus1.getMyCart().removeGameFromCart(cus1, "RE7");
         
-
+        cus1.getMyCart().listGameFromCart();
+        
+        System.out.println("======================================================================");
+        
+        cus2.getMyCart().addGameToCart(gameStore, "RE7");       
+        cus2.getMyCart().addGameToCart(gameStore, "TOMB RIDER");
+        cus2.getMyCart().addGameToCart(gameStore, "RE7");
+        cus2.getMyCart().addGameToCart(gameStore, "RE8");
+        
+        cus1.getMyCart().listGameFromCart();
+        
+        System.out.println("======================================================================");
+            
+        cus1.getMyCart().listGameFromCart();
+        
+        System.out.println("=============================TEST FOR BUYING=========================================");
+        
         cus1.TopupMoney(1000);
-        System.out.println("");
-        cus2.TopupMoney(2040);
-        System.out.println("");
-        cus1.TopupMoney(500);
-        System.out.println("");
-        cus2.TopupMoney(50);
-        System.out.println("");
+        cus2.TopupMoney(500);
+        
+        cus1.TopupMoney(0);
+        cus1.TopupMoney(-50);
+        
+        cus1.getMyLibrary().addGameFromCartToLibrary();
+        
+        cus1.listBuyingHistory();
+        
+        cus1.getMyLibrary().listMyGameInLibrary(cus1);
         
         cus2.getMyLibrary().addGameFromCartToLibrary();
-        System.out.println("-----------------------------------------------------------------");
-//        
-        cus1.getMyLibrary().addGameFromCartToLibrary();
-        System.out.println("-----------------------------------------------------------------");
-//admin.writePurchaseHistory(cus2);
-//admin.readPurchaseHistory("purchasehistory.dat",cus2);
         
+        cus2.listBuyingHistory();
         
-
-
-
-//        System.out.println(c1.getTotalprice());
-//        System.out.println(cus1.getMyMoney());
-//        System.out.println("");
-//        System.out.println(cus1.getMyLibrary().getMyGameLibrary());
-//        System.out.println(cus2.getMyLibrary().getMyGameLibrary());
-//        cus2.listBuyingHistory();
-        //System.out.println(lb1.getMyGameLibrary(cus2));
-        // dataaccess.DBconnection.SelectLastMoney(cus1.getUniqueId());
-
-//        cus2.TopupMoney(1000);
-//        c2.addGameToCart(gameStore, cus1, "RE7");
-//        lb2.payGame(cus2);
-//        System.out.println(lb1.getMyGameLibrary(cus2));
-//        c1.addGameToCart(gameStore, cus1, "TOMB RIDER");
-//        c1.listGameFromCart();
-        // cus1.addCustomerToServer(500,"Nui","1231231",c1);
-        // System.out.println(lb1.getMyGameLibrary(null));
-//        CustomerAccount cusall[]= {cus1,cus2};
-//        AllCustomer all = new AllCustomer(cusall);
-//        admin.WriteCustomerData(admin,all);
-//        admin.readCustomer(admin, "file_.dat");
-//           ReadWritePurchaseHistoryTranscription.writePurchaseHistory2(cus2);
-//           ReadWritePurchaseHistoryTranscription.readPurchaseHistory("purchasehistory.txt", cus2);
+        cus2.getMyLibrary().listMyGameInLibrary(cus2);
+        
+        cus2.getMyLibrary().addGameFromCartToLibrary();
+        
+        cus2.getMyLibrary().listMyGameInLibrary(cus2);
+        
+        cus2.listBuyingHistory();
+        
+        cus2.customerReadPurchaseHistoryOf();
     }    
 }
 

@@ -7,14 +7,16 @@ import java.util.Objects;
 public class Game {
     private String id;
     private String title;
-    private double price;
+    private double specialprice;
+    private double normalprice;
     private GameStatus status;
 
     public Game(String id, String title, double price) {
         this.id = id;
         this.title = title;
-        this.price = price;
-       
+        this.specialprice = price;
+        this.normalprice = price;
+        this.status = GameStatus.ONSALED;
     }
 
     public void setStatus(GameStatus status) {
@@ -50,19 +52,27 @@ public class Game {
         return status;
     }
 
-    public double getPrice() {
-        return price;
+    public double getSpecialPrice() {
+        return specialprice;
+    }
+
+    public double getNormalprice() {
+        return normalprice;
     }
     
    
 
     @Override
     public String toString() {
-        return "Game{" + "id=" + id + ", title=" + title + ", price=" + price + '}' ;
+        return "Game{" + "id=" + id + ", title=" + title + ", price=" + specialprice + '}' ;
     }
 
     public String getTitle() {
         return title;
+    }
+
+    public void setPrice(double price) {
+        this.specialprice = price;
     }
 
     

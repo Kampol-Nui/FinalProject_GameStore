@@ -3,6 +3,7 @@ package service;
 //import io.AllCustomer;
 import person.Person;
 import account.Account;
+import admin.io.ReadWritePurchaseHistoryTranscription;
 
 //admin.writePurchaseHistory(cus2);
 //admin.readPurchaseHistory("purchasehistory.dat",cus2);
@@ -13,6 +14,12 @@ public class AdminAccount extends Account {
 
     }
     
+    
+ 
+    
+//    public void adminReadPurchaseHistoryOf(CustomerAccount ac){
+//      ReadWritePurchaseHistoryTranscription.readPurchaseHistory(ac);
+//    }
 //    public void readCustomer(AdminAccount ad, String filename) {
 //        try (FileInputStream fis = new FileInputStream(filename);
 //                BufferedInputStream bis = new BufferedInputStream(fis);

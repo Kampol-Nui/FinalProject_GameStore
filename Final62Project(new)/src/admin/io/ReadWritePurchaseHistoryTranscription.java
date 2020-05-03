@@ -34,14 +34,13 @@ import service.CustomerAccount;
  */
 public class ReadWritePurchaseHistoryTranscription {
 
-    public static void writePurchaseHistory2(CustomerAccount ac) {
+    public static void writePurchaseHistory(CustomerAccount ac) {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();
-                FileOutputStream fos = new FileOutputStream("Purchasehistory.dat");
-                BufferedOutputStream bos = new BufferedOutputStream(fos);
-                FileWriter fwt = new FileWriter("Purchasehistory.txt");
-                BufferedWriter out = new BufferedWriter(fwt);
-                DataOutputStream dos = new DataOutputStream(bos)) {
+                
+                FileWriter fwt = new FileWriter("Purchasehistory"+"_"+ac.getUsername()+".txt");
+                BufferedWriter out = new BufferedWriter(fwt)
+                ) {
             ResultSet rs = null;
             rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
             while (rs.next()) {
@@ -51,12 +50,7 @@ public class ReadWritePurchaseHistoryTranscription {
                 String game = rs.getString("GAME");
                 double totalprice = rs.getDouble("TOTALPRICE");
                 double mymoney = rs.getDouble("MYMONEY");
-                dos.writeUTF(timestamp);
-                dos.writeLong(id);
-                dos.writeUTF(username);
-                dos.writeUTF(game);
-                dos.writeDouble(totalprice);
-                dos.writeDouble(mymoney);
+                
                 out.write(timestamp + " " + id + " " + username + " " + game + " " + totalprice + " " + mymoney + "\n");
             }
 
@@ -70,12 +64,11 @@ public class ReadWritePurchaseHistoryTranscription {
 
     }
 
-    public static void readPurchaseHistory(String filename, CustomerAccount ac) {
-        try (FileInputStream fis = new FileInputStream(filename);
-                BufferedInputStream bis = new BufferedInputStream(fis);
-                FileReader frd = new FileReader("Purchasehistory.txt");
-                BufferedReader rdr = new BufferedReader(frd);
-                DataInputStream dis = new DataInputStream(bis)) {
+    public static void readPurchaseHistory(CustomerAccount ac) {
+        try (
+                FileReader frd = new FileReader("Purchasehistory"+"_"+ac.getUsername()+".txt");
+                BufferedReader rdr = new BufferedReader(frd)
+                ) {
             String line;
             while ((line = rdr.readLine()) != null) {
                 System.out.println(line);

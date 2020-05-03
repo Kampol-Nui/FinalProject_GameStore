@@ -17,11 +17,11 @@ public class Cart implements CustomerService {
         return this.totalprice;
     }
     public double getEachGamePrice(int i){
-        return this.itemInCart.get(i).getPrice();
+        return this.itemInCart.get(i).getSpecialPrice();
     }
     public void calculateTotalPrice() {
         for (int i = 0; i < this.itemInCart.size(); i++) {
-            this.totalprice += this.itemInCart.get(i).getPrice();
+            this.totalprice += this.itemInCart.get(i).getSpecialPrice();
 
         }
 
@@ -31,15 +31,15 @@ public class Cart implements CustomerService {
         System.out.println("************************ เกมในตระกร้าของฉัน *************************");
         if (itemInCart.isEmpty()) {
             System.out.println("คุณยีงไม่มีเกมในตระกร้า");
-
+System.out.println("******************************************************************");
             return false;
         }
         for (Game game : this.itemInCart) {
 
-            System.out.print(game + "\t");
-            System.out.println("Index is " + this.itemInCart.indexOf(game));
+            System.out.println(game + "\t");
+           
         }
-
+System.out.println("******************************************************************");
         return true;
 
     }
@@ -82,7 +82,7 @@ public class Cart implements CustomerService {
             for (int i = 0; i < this.itemInCart.size(); i++) {
                 if (this.itemInCart.get(i).getTitle().equals(title)) {
                     this.itemInCart.remove(this.itemInCart.get(i));
-                    System.out.println("คุณได้ลบเกม " + this.itemInCart.get(i).getTitle() + " ออกจากตระกร้า!");
+                    System.out.println("คุณได้ลบเกม " + title + " ออกจากตระกร้า!");
                     return true;
                 }
 

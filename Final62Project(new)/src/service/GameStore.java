@@ -10,7 +10,7 @@ public class GameStore implements AdminService {
     private ArrayList<Game> gameStore;
     private GameStatus gamestatus;
     private String name;
-
+    //private double[] 
     public GameStore(String name) {
         this.name = name;
         gameStore = new ArrayList<>();
@@ -24,8 +24,8 @@ public class GameStore implements AdminService {
             return false;
         }
         for (Game game : gameStore) {
-            System.out.print(game + "\t");
-            System.out.println("Index is " + gameStore.indexOf(game));
+            System.out.println(game + "\t");
+            
         }
         System.out.println("------------------------------------------------------------------------------");
         return true;
@@ -36,7 +36,7 @@ public class GameStore implements AdminService {
     }
 
     @Override
-    public boolean addGame(AdminAccount admin, Game game) {
+    public boolean addGameFrom(AdminAccount admin, Game game) {
         try {
             Objects.requireNonNull(admin, "AdminAccount cannot be null");
             if (game == null) {
@@ -60,23 +60,55 @@ public class GameStore implements AdminService {
         return false;
     }
 
-    @Override
-    public boolean changeStatus(AdminAccount admin, String title, GameStatus status) {
+   
+    public GameStatus changeGameStatusFrom(AdminAccount admin, String title, GameStatus status) {
         try {
             for (int i = 0; i < this.gameStore.size(); i++) {
                 if (this.gameStore.get(i).getTitle().equals(title)) {
                     this.gameStore.get(i).setStatus(status);
-                    return true;
+                     if(status==GameStatus.ONSALED){
+                         this.gameStore.get(i).setPrice(this.gameStore.get(i).getNormalprice());
+                         System.out.print("เกม "+this.gameStore.get(i).getTitle()+" ราคา "+this.gameStore.get(i).getNormalprice()+" ");
+                     }
+                    return status;
                 }
 
             }
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
-            return false;
+            
         }
         System.out.println("not found the game to add");
-        return false;
+        return null;
     }
+    
+
+    public GameStatus changeGameStatusFrom(AdminAccount admin, String title, GameStatus status,double discountpercent) {
+        try {
+            for (int i = 0; i < this.gameStore.size(); i++) {
+                if (this.gameStore.get(i).getTitle().equals(title)) {
+                    this.gameStore.get(i).setStatus(status);
+                     if(status==GameStatus.DISCOUNTED){
+                         this.gameStore.get(i).setPrice((this.gameStore.get(i).getSpecialPrice()*discountpercent)/100);
+                         System.out.print("ลดราคาแล้ว "+this.gameStore.get(i).getTitle()+" ในร้านค้า "+this+" เหลือ "+this.gameStore.get(i).getSpecialPrice()+" ");
+                     }
+                    return status;
+                }
+
+            }
+        } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            
+        }
+        System.out.println("not found the game to add");
+        return null;
+    }
+    
+//    public void calculateDiscount(Game game,double discountpercent){
+//        if(this.changeGameStatusFrom(admin, name, gamestatus)==GameStatus.DISCOUNTED){
+//            game.setPrice((game.getPrice()*discountpercent)/100);
+//        }
+//    }
 
     @Override
     public boolean removeGame(AdminAccount admin, Game game) {

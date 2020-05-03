@@ -1,16 +1,22 @@
 package dataaccess;
 
 import account.AccountStatus;
+import game.Game;
 import genarate.TimeStamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import service.CustomerAccount;
 import service.TopupStatus;
 
 public class DBmanager {
+
+    
 
     public static void keepCustomerInfo(CustomerAccount ac) {
         String sql1 = "INSERT INTO CUSTOMERACCOUNT " + "(id,username,password,mymoney)" + "VALUES(?,?,?,?)";
@@ -68,7 +74,7 @@ public class DBmanager {
             String query = ("SELECT * FROM PURCHASEHISTORY WHERE ID =" + ac.getUniqueId());
             rs = stm.executeQuery(query);
             System.out.println("================================================================================================================");
-            System.out.println(String.format("%11s %s %10s %s %20s %s %20s %s %14s %s %s", "DATETIME", "|", "ID", "|", "USERNAME", "|", "GAME", "|", "TOTALPRICE", "|", "MYMONEY"));
+            System.out.println(String.format("%20s %s %10s %s %20s %s %20s %s %14s %s %s", "DATETIME", "|", "ID", "|", "USERNAME", "|", "GAME", "|", "TOTALPRICE", "|", "MYMONEY"));
             System.out.println("================================================================================================================");
             while (rs.next()) {
                 String dateTime = rs.getString("timestamp");
@@ -77,7 +83,7 @@ public class DBmanager {
                 String game = rs.getString("game");
                 double totalprice = rs.getDouble("totalprice");
                 double mymoney = rs.getDouble("mymoney");
-                System.out.println(String.format("%11s %s %10s %s %20s %s %20s %s %14s %s %s", dateTime, "|", id, "|", username, "|", game, "|", totalprice, "|", mymoney));
+                System.out.println(String.format("%20s %s %10s %s %20s %s %20s %s %14s %s %s", dateTime, "|", id, "|", username, "|", game, "|", totalprice, "|", mymoney));
             }
             System.out.println("----------------------------------------------------------------------------------------------------------------");
 
@@ -354,6 +360,9 @@ public class DBmanager {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
+            if(ac.getMyCart().getItemInCart().isEmpty()){
+                return false;
+            }
             for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
                 String query = "SELECT * FROM LIBRARY WHERE ID= " + ac.getUniqueId() + "AND GAME='" + ac.getMyCart().getItemInCart().get(i).getTitle() + "'";
                 rs = stm.executeQuery(query);
@@ -371,5 +380,61 @@ public class DBmanager {
         }
         return true;
     }
+    
+    
+    public static boolean checkRepeatName(CustomerAccount ac) {
 
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+            for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
+                String query = "SELECT * FROM LIBRARY WHERE USERNAME='"+ac.getUsername()+"'";
+                rs = stm.executeQuery(query);
+
+                while (rs.next()) {
+                    String gameName = rs.getString("GAME");
+                    if(gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())){
+                        return false;
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return true;
+    }
+    
+    public static void listRecentLibrary(CustomerAccount ac){
+        String sql1 = "SELECT * FROM LIBRARY WHERE ID="+ac.getUniqueId();
+        try (Connection con = DBconnection.getConnecting();) {
+            try (
+                    Statement stm = con.createStatement()) {
+               
+                      ResultSet rs = null;
+//                    double myEachMoney = DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
+//                    String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
+//                    try (Statement stm = con.createStatement();) {
+//
+//                        stm.executeUpdate(sql3);
+//                    } catch (SQLException ex) {
+//                  
+//                    }
+                    rs = stm.executeQuery(sql1);
+                    while(rs.next()){
+                    
+                    String game = rs.getString("GAME");
+
+                    System.out.println(game);
+                    
+                    }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+    }   catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+}
 }
