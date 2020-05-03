@@ -124,6 +124,7 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+        DBmanager.addGametoDatabase(ac);
 
     }
 
@@ -332,21 +333,43 @@ public class DBmanager {
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
 
-            String query = "SELECT * FROM CUSTOMERACCOUNT WHERE USERNAME= '" + username1 + "'AND PASSWORD='" + password1+"'";
+            String query = "SELECT * FROM CUSTOMERACCOUNT WHERE USERNAME= '" + username1 + "'AND PASSWORD='" + password1 + "'";
             rs = stm.executeQuery(query);
             while (rs.next()) {
                 id = rs.getLong("ID");
                 username = rs.getString("USERNAME");
                 password = rs.getString("PASSWORD");
                 myMoney = rs.getDouble("MYMONEY");
-                
-                
+
             }
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
         return null;
+    }
+
+    public static boolean checkRepeatGameInLibrary(CustomerAccount ac) {
+
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+            for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
+                String query = "SELECT * FROM LIBRARY WHERE ID= " + ac.getUniqueId() + "AND GAME='" + ac.getMyCart().getItemInCart().get(i).getTitle() + "'";
+                rs = stm.executeQuery(query);
+
+                while (rs.next()) {
+                    String gameName = rs.getString("GAME");
+                    if(gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())){
+                        return false;
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return true;
     }
 
 }
