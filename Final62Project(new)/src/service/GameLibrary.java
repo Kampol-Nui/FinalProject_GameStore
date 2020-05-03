@@ -22,7 +22,7 @@ public class GameLibrary {
             this.myGameLibrary = (ArrayList<Game>) ac.getMyCart().itemInCart.clone();
             double oldmoney = dataaccess.DBmanager.SelectLastMoney(ac);
             ac.myLastMoney = dataaccess.DBmanager.SelectLastMoney(ac) - ac.getMyCart().getTotalprice();
-            
+            DBmanager.addGametoDatabase(ac);
             DBmanager.PurchaseGame(ac);
             ac.getMyCart().itemInCart.clear();
             System.out.println("ยอดเงินคงเหลือหลังชำระ : " + ac.getMyMoney() + " ยอดเงินก่อนชำระ : " + oldmoney);

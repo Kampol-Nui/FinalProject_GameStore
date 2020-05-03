@@ -163,6 +163,10 @@ public class DBmanager {
                 stm.executeUpdate("DROP TABLE PURCHASEHISTORY");
             } catch (SQLException ex) {
             }
+            try {
+                stm.executeUpdate("DROP TABLE LIBRARY");
+            } catch (SQLException ex) {
+            }
             //try {stm.executeUpdate("CREATE TABLE customer (cus_id INT NOT NULL, cus_name VARCHAR(100),PRIMARY KEY (cus_id))");} catch (SQLException ex) {} 
             try {
                 stm.executeUpdate("CREATE TABLE CUSTOMERACCOUNT (ID BIGINT not null primary key,USERNAME VARCHAR(50),PASSWORD VARCHAR(50),MYMONEY DOUBLE)");
@@ -176,6 +180,11 @@ public class DBmanager {
             try {
                 stm.executeUpdate("CREATE TABLE PURCHASEHISTORY (ORDER_NUMBER INT not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),"
                         + " TIMESTAMP VARCHAR(50),ID BIGINT,USERNAME VARCHAR(50),GAME VARCHAR(50),TOTALPRICE DOUBLE,MYMONEY DOUBLE)");
+            } catch (SQLException ex) {
+            }
+            try {
+                stm.executeUpdate("CREATE TABLE LIBRARY (ORDER_NUMBER INT not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),"
+                        + " ID BIGINT,GAME VARCHAR(50))");
             } catch (SQLException ex) {
             }
         } catch (SQLException ex) {
@@ -253,6 +262,43 @@ public class DBmanager {
             System.out.println(ex.getMessage());
         }
         return ordernumber;
+    }
+    
+    public static void addGametoDatabase(CustomerAccount ac){
+        String sql1 = "INSERT INTO LIBRARY " + "(id,game)" + "VALUES(?,?)";
+        try (Connection con = DBconnection.getConnecting();) {
+            try (
+                    PreparedStatement pstm = con.prepareStatement(sql1);) {
+                for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
+//                    double myEachMoney = DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
+//                    String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
+//                    try (Statement stm = con.createStatement();) {
+//
+//                        stm.executeUpdate(sql3);
+//                    } catch (SQLException ex) {
+//
+//                    }
+                    pstm.setDouble(1, ac.getUniqueId());
+                    pstm.setString(2, ac.getMyCart().getItemInCart().get(i).getTitle());
+                    
+
+                    pstm.executeUpdate();
+
+                }
+
+            } catch (SQLException ex) {
+                ex.getMessage();
+            }
+            String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + ac.getMyMoney() + " WHERE id =" + ac.getUniqueId();
+            try (Statement stm = con.createStatement();) {
+                stm.executeUpdate(sql2);
+                System.out.println("ชำระเงินเสร็จสมบูรณ์ โปรดตรวจสอบ Library ของคุณหลังชำระเงิน ");
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 }

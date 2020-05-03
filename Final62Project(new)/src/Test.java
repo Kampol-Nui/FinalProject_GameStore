@@ -137,7 +137,7 @@ public class Test {
 //        admin.WriteCustomerData(admin,all);
 //        admin.readCustomer(admin, "file_.dat");
            ReadWritePurchaseHistoryTranscription.writePurchaseHistory2(cus2);
-        
+           ReadWritePurchaseHistoryTranscription.readPurchaseHistory("purchasehistory.txt", cus2);
     }    
 }
 
