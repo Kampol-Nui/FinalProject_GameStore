@@ -18,6 +18,7 @@ public class CustomerApplication {
     static int choice;
     static String customerMenu = "Menu:\n"
             + "1. Register\n"
+            + "2. Login\n"
             + "0. exit\n"
             + "Select menu: ";
     static Scanner input = new Scanner(System.in);
@@ -51,6 +52,9 @@ public class CustomerApplication {
                     System.out.println("Registered\n");
                     new CustomerAccount(username, password, AccountStatus.ACTIVE, new Person(name, email, phone));
                     break;
+                }
+                case 2: {
+                    
                 }
                 case 0: {
                     break;

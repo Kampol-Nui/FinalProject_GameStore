@@ -3,6 +3,7 @@
 import service.AdminAccount;
 import person.Person;
 import account.AccountStatus;
+import admin.io.ReadWritePurchaseHistoryTranscription;
 import service.GameStore;
 import game.Game;
 import service.CustomerAccount;
@@ -135,6 +136,7 @@ public class Test {
 //        AllCustomer all = new AllCustomer(cusall);
 //        admin.WriteCustomerData(admin,all);
 //        admin.readCustomer(admin, "file_.dat");
+           ReadWritePurchaseHistoryTranscription.writePurchaseHistory2(cus2);
         
     }    
 }
