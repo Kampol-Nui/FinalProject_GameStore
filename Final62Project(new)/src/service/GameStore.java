@@ -1,6 +1,5 @@
 package service;
 
-import admin.io.ReadWritePurchaseHistoryTranscription;
 import game.GameStatus;
 import game.Game;
 import java.util.ArrayList;
@@ -107,9 +106,6 @@ public class GameStore implements AdminService {
         return name;
     }
 
-//    public void printHistoryTranscription() {
-//        ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac, timestamp, 0, username, game, 0, 0);
-//        
-//    }
+
 
 }

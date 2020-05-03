@@ -1,14 +1,11 @@
 package dataaccess;
 
 import genarate.TimeStamp;
-import admin.io.ReadWritePurchaseHistoryTranscription;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import service.CustomerAccount;
 import service.TopupStatus;
 
@@ -258,22 +255,4 @@ public class DBmanager {
         return ordernumber;
     }
 
-    public static void selectPurchaseHistoryAndWrite(CustomerAccount ac) {
-        try (Connection con = DBconnection.getConnecting();
-                Statement stm = con.createStatement();) {
-            ResultSet rs = null;
-            rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
-            while (rs.next()) {
-                String timestamp = rs.getString("TIMESTAMP");
-                long id = rs.getLong("ID");
-                String username = rs.getString("USERNAME");
-                String game = rs.getString("GAME");
-                double totalprice = rs.getDouble("TOTALPRICE");
-                double mymoney = rs.getDouble("MYMONEY");
-                ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac, timestamp, id, username, game, totalprice, mymoney);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DBmanager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }
