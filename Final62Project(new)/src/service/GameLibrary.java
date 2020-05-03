@@ -16,7 +16,6 @@ public class GameLibrary {
     }
 
     public void addGameFromCartToLibrary() {
-
         ac.getMyCart().calculateTotalPrice();
         if (ac.getMyCart().getTotalprice() <= dataaccess.DBmanager.SelectLastMoney(ac)) {
             this.myGameLibrary = (ArrayList<Game>) ac.getMyCart().itemInCart.clone();
@@ -25,7 +24,7 @@ public class GameLibrary {
             DBmanager.addGametoDatabase(ac);
             DBmanager.PurchaseGame(ac);
             ac.getMyCart().itemInCart.clear();
-            System.out.println("ยอดเงินคงเหลือหลังชำระ : " + ac.getMyMoney() + " ยอดเงินก่อนชำระ : " + oldmoney);
+            System.out.println("ยอดเงินก่อนชำระ : " + oldmoney + " ยอดเงินคงเหลือหลังชำระ : " + ac.getMyMoney());
         } else {
             System.out.println("จำนวนเงินในกระเป๋าของคุณไม่เพียงพอ โปรดเติมเงินของคุณ");
         }

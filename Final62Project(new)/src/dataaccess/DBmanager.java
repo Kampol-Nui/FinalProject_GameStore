@@ -1,5 +1,6 @@
 package dataaccess;
 
+import account.AccountStatus;
 import genarate.TimeStamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ public class DBmanager {
 
     public static void keepCustomerInfo(CustomerAccount ac) {
         String sql1 = "INSERT INTO CUSTOMERACCOUNT " + "(id,username,password,mymoney)" + "VALUES(?,?,?,?)";
+        String sql2 = "INSERT INTO PERSONINFO " + "(name,email,phone)" + "VALUES(?,?,?)";
         try (Connection conn = DBconnection.getConnecting();) {
             try (PreparedStatement pstm = conn.prepareStatement(sql1);) {
                 pstm.setDouble(1, ac.getUniqueId());
@@ -43,12 +45,11 @@ public class DBmanager {
                 stm.setString(5, TopupStatus.SUCCESSFUL.name());
                 stm.executeUpdate();
                 lastMoney = ac.getTopupMoney() + SelectLastMoney(ac);
-                System.out.println(lastMoney);
                 String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + lastMoney + " WHERE id =" + ac.getUniqueId();
                 try (Statement stmm = con.createStatement();) {
                     stmm.executeUpdate(sql2);
                     System.out.println("เติมเงินเสร็จสมบูรณ์");
-
+                    System.out.println(lastMoney);
                 } catch (SQLException ex) {
                     System.out.println(ex.getMessage());
                 }
@@ -193,7 +194,7 @@ public class DBmanager {
 
     }
 
-    public static void selectAllCustomer() {
+    public static void seeDataofAllCustomer() {
         long id = 0;
         String username = null;
         String password = null;
@@ -219,6 +220,29 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public static boolean verifyCustomer(String username, String password) {
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = "SELECT * FROM CUSTOMERACCOUNT";
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                String DBusername = rs.getString("USERNAME");
+                String DBpassword = rs.getString("PASSWORD");
+                if (username.equals(DBusername) && password.equals(DBpassword)) {
+                    return true;
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
     }
 
     public static long selectLastCustomerID() {
@@ -263,8 +287,8 @@ public class DBmanager {
         }
         return ordernumber;
     }
-    
-    public static void addGametoDatabase(CustomerAccount ac){
+
+    public static void addGametoDatabase(CustomerAccount ac) {
         String sql1 = "INSERT INTO LIBRARY " + "(id,game)" + "VALUES(?,?)";
         try (Connection con = DBconnection.getConnecting();) {
             try (
@@ -280,7 +304,6 @@ public class DBmanager {
 //                    }
                     pstm.setDouble(1, ac.getUniqueId());
                     pstm.setString(2, ac.getMyCart().getItemInCart().get(i).getTitle());
-                    
 
                     pstm.executeUpdate();
 
@@ -292,13 +315,38 @@ public class DBmanager {
             String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + ac.getMyMoney() + " WHERE id =" + ac.getUniqueId();
             try (Statement stm = con.createStatement();) {
                 stm.executeUpdate(sql2);
-                System.out.println("ชำระเงินเสร็จสมบูรณ์ โปรดตรวจสอบ Library ของคุณหลังชำระเงิน ");
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public static CustomerAccount getObjectCustomerFrom(String username1, String password1) {
+        long id = 0;
+        String username = null;
+        String password = null;
+        double myMoney = 0;
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = "SELECT * FROM CUSTOMERACCOUNT WHERE USERNAME= '" + username1 + "'AND PASSWORD='" + password1+"'";
+            rs = stm.executeQuery(query);
+            while (rs.next()) {
+                id = rs.getLong("ID");
+                username = rs.getString("USERNAME");
+                password = rs.getString("PASSWORD");
+                myMoney = rs.getDouble("MYMONEY");
+                
+                
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return null;
     }
 
 }

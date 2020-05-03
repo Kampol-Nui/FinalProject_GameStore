@@ -1,5 +1,7 @@
 
 import account.AccountStatus;
+import dataaccess.DBmanager;
+import genarate.GetNextID;
 import java.util.Scanner;
 import person.Person;
 import service.CustomerAccount;
@@ -16,20 +18,27 @@ import service.CustomerAccount;
 public class CustomerApplication {
 
     static int choice;
-    static String customerMenu = "Menu:\n"
+    static String mainMenu = "Menu:\n"
             + "1. Register\n"
             + "2. Login\n"
+            + "0. exit\n"
+            + "Select menu: ";
+    static String customerMenu = "Menu:\n"
+            + "1. Topup Money\n"
+            + "2. List Game in Store\n"
+            + "3. Add Game To Cart\n"
+            + "4. Check Money\n"
             + "0. exit\n"
             + "Select menu: ";
     static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
-        customerMenu();
+        mainMenu();
     }
 
-    public static void customerMenu() {
+    public static void mainMenu() {
         do {
-            System.out.print(customerMenu);
+            System.out.print(mainMenu);
             choice = input.nextInt();
 
             switch (choice) {
@@ -50,11 +59,52 @@ public class CustomerApplication {
                     System.out.print("Input your password: ");
                     password = input.next();
                     System.out.println("Registered\n");
-                    new CustomerAccount(username, password, AccountStatus.ACTIVE, new Person(name, email, phone));
+                    new CustomerAccount(username, password, AccountStatus.ACTIVE);
+                   
                     break;
                 }
                 case 2: {
-                    
+                    String username = null;
+                    String password = null;
+                    System.out.print("Input your username: ");
+                    username = input.next();
+                    System.out.print("Input your password: ");
+                    password = input.next();
+                    DBmanager.verifyCustomer(username, password);
+                    customerMenu(DBmanager.getObjectCustomerFrom(username, password));
+                    break;
+                }
+                case 0: {
+                    break;
+                }
+
+            }
+        } while (choice != 0);
+
+    }
+
+    public static void customerMenu(CustomerAccount customerAccount) {
+        do {
+            System.out.print(customerMenu);
+            choice = input.nextInt();
+
+            switch (choice) {
+                case 1: {
+                    double money = 0;
+                    System.out.print("Input your money: ");
+                    money = input.nextDouble();
+                    customerAccount.TopupMoney(money);
+                    break;
+                }
+                case 2: {
+                    break;
+                }
+                case 3: {
+                    break;
+                }
+                case 4: {
+                    System.out.println(customerAccount.getMyMoney());
+                    break;
                 }
                 case 0: {
                     break;

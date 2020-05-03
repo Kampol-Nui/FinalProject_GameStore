@@ -48,23 +48,23 @@ public class Test {
         System.out.println("");
         gameStore.listGameFromStore();
         System.out.println("");
-//        gameStore.addGame(admin, game1);
-//        gameStore.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
-//        gameStore.addGame(admin, null);
-//        gameStore.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
-//        gameStore2.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
-//        gameStore.removeGame(admin, game2);
-//        gameStore.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
-//        gameStore.removeGame(admin, game2);
-//        gameStore.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
-//        gameStore2.removeGame(admin, game4);
-//        gameStore2.listGameFromStore();
-//        System.out.println("-----------------------------------------------------------------");
+        gameStore.addGame(admin, game1);
+        gameStore.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
+        gameStore.addGame(admin, null);
+        gameStore.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
+        gameStore2.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
+        gameStore.removeGame(admin, game2);
+        gameStore.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
+        gameStore.removeGame(admin, game2);
+        gameStore.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
+        gameStore2.removeGame(admin, game4);
+        gameStore2.listGameFromStore();
+        System.out.println("-----------------------------------------------------------------");
         System.out.println("=============================TEST FOR ADMIN=========================================");
         System.out.println("");
         System.out.println("=============================TEST FOR CUSTOMER=====================================================");
@@ -72,7 +72,7 @@ public class Test {
         cus1.getMyCart().addGameToCart(gameStore, "RE8");
         cus1.getMyCart().addGameToCart(gameStore, "RE7");
         cus1.getMyCart().addGameToCart(gameStore, "RE8");
-//        c1.addGameToCart(gameStore, cus1, "RE8");
+
         cus1.getMyCart().listGameFromCart();
         
 
@@ -80,27 +80,21 @@ public class Test {
         cus2.getMyCart().addGameToCart(gameStore, "RE8");
         cus2.getMyCart().addGameToCart(gameStore,"RE7");
         cus2.getMyCart().addGameToCart(gameStore, "TOMB RIDER");
-//        c1.addGameToCart(gameStore, cus1, "RE8");
+
         cus2.getMyCart().listGameFromCart();
         System.out.println("-----------------------------------------------------------------");
-//        c1.removeGameFromCart(null, "RE7");
-//        c1.listGameFromCart();
-//        System.out.println("-----------------------------------------------------------------");
-//        c1.removeGameFromCart(cus1, "RE7");
-//        c1.listGameFromCart();
-//        System.out.println("-----------------------------------------------------------------");
-//        System.out.println("                                                                   ");
+                                                        
         
 
         cus1.TopupMoney(1000);
-        System.out.println(cus1.getMyMoney());
         System.out.println("");
         cus2.TopupMoney(2040);
-        System.out.println(cus1.getMyMoney());
-//        cus1.TopupMoney(500);
-//        System.out.println(cus1.getMyMoney());
-//        cus2.TopupMoney(50);
-//        System.out.println(cus2.getMyMoney());
+        System.out.println("");
+        cus1.TopupMoney(500);
+        System.out.println("");
+        cus2.TopupMoney(50);
+        System.out.println("");
+        
         cus2.getMyLibrary().addGameFromCartToLibrary();
         System.out.println("-----------------------------------------------------------------");
 //        
@@ -108,13 +102,11 @@ public class Test {
         System.out.println("-----------------------------------------------------------------");
 //admin.writePurchaseHistory(cus2);
 //admin.readPurchaseHistory("purchasehistory.dat",cus2);
-
+        
         
 
-//        lb2.payGame(cus2);
-//        System.out.println("-----------------------------------------------------------------");
 
-        //lb2.payGame(cus2);
+
 //        System.out.println(c1.getTotalprice());
 //        System.out.println(cus1.getMyMoney());
 //        System.out.println("");
@@ -136,8 +128,8 @@ public class Test {
 //        AllCustomer all = new AllCustomer(cusall);
 //        admin.WriteCustomerData(admin,all);
 //        admin.readCustomer(admin, "file_.dat");
-           ReadWritePurchaseHistoryTranscription.writePurchaseHistory2(cus2);
-           ReadWritePurchaseHistoryTranscription.readPurchaseHistory("purchasehistory.txt", cus2);
+//           ReadWritePurchaseHistoryTranscription.writePurchaseHistory2(cus2);
+//           ReadWritePurchaseHistoryTranscription.readPurchaseHistory("purchasehistory.txt", cus2);
     }    
 }
 

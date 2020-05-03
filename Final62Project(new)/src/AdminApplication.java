@@ -26,7 +26,7 @@ public class AdminApplication {
 
             switch (choice) {
                 case 1: {
-                    DBmanager.selectAllCustomer();
+                    DBmanager.seeDataofAllCustomer();
                     break;
                 }
                 case 0: {
