@@ -17,7 +17,7 @@ public class GameStore implements AdminService {
         gameStore = new ArrayList<>();
 
     }
-public void listGameInStore(){
+    public void listGameInStore(){
         DBmanager.listRecentGameInStore();
     }
     public boolean listGameFromStore() {

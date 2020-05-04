@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import service.AdminAccount;
 import service.CustomerAccount;
 import service.GameStore;
 
@@ -230,7 +231,8 @@ public class DBmanager {
 
     }
 
-    public static void seeDataofAllCustomer() {
+    public static void seeDataofAllCustomer(AdminAccount ac) {
+        
         long id = 0;
         String username = null;
         String password = null;

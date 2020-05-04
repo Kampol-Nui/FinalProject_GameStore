@@ -25,28 +25,23 @@ public class Test {
         
         
 
-        Person person = new Person("Kumpol", "kumpol@gmail.com", "0945481112");
-        Person person2 = new Person("Jiwview", "jiwview@gmail.com", "16545416");
-        Person person3 = new Person("John", "wick@gmail.com", "083746800");
-        Person person4 = new Person("Sarah", "adsarah@gmail.com", "058794612");
-        Person person5 = new Person("Micheal", "admicheal@gmail.com", "0946781415");
         
-        CustomerAccount cus1 = new CustomerAccount("Kampol", "kkkkddd", AccountStatus.ACTIVE, person);
-        CustomerAccount cus2 = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE, person2);
-        CustomerAccount cus3 = new CustomerAccount("John", "Wick", AccountStatus.ACTIVE, person3);
+        CustomerAccount cus1 = new CustomerAccount("Kampol", "kkkkddd", AccountStatus.ACTIVE);
+        CustomerAccount cus2 = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE);
+        CustomerAccount cus3 = new CustomerAccount("John", "Wick", AccountStatus.ACTIVE);
         
-        AdminAccount admin = new AdminAccount("NobodyFound", "007", person4);
-        AdminAccount admin2 = new AdminAccount("ADM", "123456789", person5);
+        AdminAccount admin = new AdminAccount("NobodyFound", "007");
+        AdminAccount admin2 = new AdminAccount("ADM", "123456789");
         
         
         GameStore gameStore = new GameStore("EPRICK");
        
         
         
-        Game game1 = new Game("01", "TOMB RIDER", 20);
-        Game game2 = new Game("02", "RE7", 60);
-        Game game3 = new Game("03", "RE8", 100);
-        Game game4 = new Game("04", "RE9", 40);
+        Game game1 = new Game("TOMB RIDER", 20);
+        Game game2 = new Game("RE7", 60);
+        Game game3 = new Game("RE8", 100);
+        Game game4 = new Game("RE9", 40);
 
         System.out.println("=============================TEST FOR GAMESTORE=========================================");
 
@@ -76,8 +71,8 @@ public class Test {
         
         cus1.getMyCart().listGameFromCart();
         
-        cus1.getMyCart().removeGameFromCart(cus1, "RE7");
-        cus1.getMyCart().removeGameFromCart(cus1, "RE7");
+        cus1.getMyCart().removeGameFromCart("RE7");
+        cus1.getMyCart().removeGameFromCart("RE7");
         
         cus1.getMyCart().listGameFromCart();
         
@@ -121,6 +116,8 @@ public class Test {
         cus2.listBuyingHistory();
         
         cus2.customerReadPurchaseHistoryOf();
+        
+        admin.seeInfoOfAllCustomer();
     }    
 }
 
