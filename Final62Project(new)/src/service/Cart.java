@@ -16,9 +16,11 @@ public class Cart implements CustomerService {
     public double getTotalprice() {
         return this.totalprice;
     }
-    public double getEachGamePrice(int i){
+
+    public double getEachGamePrice(int i) {
         return this.itemInCart.get(i).getSpecialPrice();
     }
+
     public void calculateTotalPrice() {
         for (int i = 0; i < this.itemInCart.size(); i++) {
             this.totalprice += this.itemInCart.get(i).getSpecialPrice();
@@ -31,21 +33,17 @@ public class Cart implements CustomerService {
         System.out.println("************************ เกมในตระกร้าของฉัน *************************");
         if (itemInCart.isEmpty()) {
             System.out.println("คุณยีงไม่มีเกมในตระกร้า");
-System.out.println("******************************************************************");
+            System.out.println("******************************************************************");
             return false;
         }
         for (Game game : this.itemInCart) {
 
             System.out.println(game + "\t");
-           
+
         }
-System.out.println("******************************************************************");
+        System.out.println("******************************************************************");
         return true;
 
-    }
-
-    public void removeallItemFromCart(CustomerAccount ac) {
-        ac.getMyCart().itemInCart = null;
     }
 
     @Override
@@ -77,7 +75,7 @@ System.out.println("************************************************************
     }
 
     @Override
-    public boolean removeGameFromCart(CustomerAccount ca, String title) {
+    public boolean removeGameFromCart(String title) {
         try {
             for (int i = 0; i < this.itemInCart.size(); i++) {
                 if (this.itemInCart.get(i).getTitle().equals(title)) {
@@ -104,7 +102,4 @@ System.out.println("************************************************************
 //        
 //        return gameName[i];
 //    }
-    
-    
-
 }
