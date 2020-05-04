@@ -2,6 +2,7 @@ package dataaccess;
 
 import account.AccountStatus;
 import game.Game;
+import genarate.GetNextID;
 import genarate.TimeStamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +16,6 @@ import service.CustomerAccount;
 import service.TopupStatus;
 
 public class DBmanager {
-
-    
 
     public static void keepCustomerInfo(CustomerAccount ac) {
         String sql1 = "INSERT INTO CUSTOMERACCOUNT " + "(id,username,password,mymoney)" + "VALUES(?,?,?,?)";
@@ -252,7 +251,7 @@ public class DBmanager {
         return false;
     }
 
-    public static long selectLastCustomerID() {
+    public static long incrementLastCustomerID() {
         long id = 0;
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
@@ -262,10 +261,11 @@ public class DBmanager {
 
             rs = stm.executeQuery(query);
 
-            if (rs.next()) {
+            while (rs.next()) {
                 id = rs.getLong(1);
                 id++;
             }
+
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -360,7 +360,7 @@ public class DBmanager {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
-            if(ac.getMyCart().getItemInCart().isEmpty()){
+            if (ac.getMyCart().getItemInCart().isEmpty()) {
                 return false;
             }
             for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
@@ -369,7 +369,7 @@ public class DBmanager {
 
                 while (rs.next()) {
                     String gameName = rs.getString("GAME");
-                    if(gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())){
+                    if (gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())) {
                         return false;
                     }
                 }
@@ -380,20 +380,19 @@ public class DBmanager {
         }
         return true;
     }
-    
-    
+
     public static boolean checkRepeatName(CustomerAccount ac) {
 
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
             for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
-                String query = "SELECT * FROM LIBRARY WHERE USERNAME='"+ac.getUsername()+"'";
+                String query = "SELECT * FROM LIBRARY WHERE USERNAME='" + ac.getUsername() + "'";
                 rs = stm.executeQuery(query);
 
                 while (rs.next()) {
                     String gameName = rs.getString("GAME");
-                    if(gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())){
+                    if (gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())) {
                         return false;
                     }
                 }
@@ -404,14 +403,14 @@ public class DBmanager {
         }
         return true;
     }
-    
-    public static void listRecentLibrary(CustomerAccount ac){
-        String sql1 = "SELECT * FROM LIBRARY WHERE ID="+ac.getUniqueId();
+
+    public static void listRecentLibrary(CustomerAccount ac) {
+        String sql1 = "SELECT * FROM LIBRARY WHERE ID=" + ac.getUniqueId();
         try (Connection con = DBconnection.getConnecting();) {
             try (
                     Statement stm = con.createStatement()) {
-               
-                      ResultSet rs = null;
+
+                ResultSet rs = null;
 //                    double myEachMoney = DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
 //                    String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
 //                    try (Statement stm = con.createStatement();) {
@@ -420,21 +419,21 @@ public class DBmanager {
 //                    } catch (SQLException ex) {
 //                  
 //                    }
-                    rs = stm.executeQuery(sql1);
-                    while(rs.next()){
-                    
+                rs = stm.executeQuery(sql1);
+                while (rs.next()) {
+
                     String game = rs.getString("GAME");
 
                     System.out.println(game);
-                    
-                    }
+
+                }
 
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-    }   catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
 
-}
+    }
 }

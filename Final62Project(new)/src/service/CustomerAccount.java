@@ -7,7 +7,6 @@ import account.AccountStatus;
 import admin.io.ReadWritePurchaseHistoryTranscription;
 import dataaccess.DBmanager;
 
-
 public class CustomerAccount extends Account {
 
     private long uniqueId;
@@ -17,17 +16,26 @@ public class CustomerAccount extends Account {
     protected double myLastMoney;
     //public double myEachMoney;
 
-    public CustomerAccount(String username, String password, AccountStatus status, Person person){
+    public CustomerAccount(String username, String password, AccountStatus status, Person person) {
         super(username, password, person);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-        this.uniqueId = GetNextID.getNext();
-        callKeepCustomerInfo();
-        
-        
+         callKeepCustomerInfo();
+
     }
 
-    private void callKeepCustomerInfo() {
+    public CustomerAccount(String username, String password, AccountStatus status) {
+        super(username, password);
+        this.myCart = new Cart();
+        this.myLibrary = new GameLibrary(this);
+
+    }
+
+    public void genIDForThisCustomer() {
+        this.uniqueId = GetNextID.getNext();
+    }
+
+    public void callKeepCustomerInfo() {
         DBmanager.keepCustomerInfo(this);
     }
 
@@ -69,8 +77,8 @@ public class CustomerAccount extends Account {
 //    public double getMyEachMoney() {
 //        return myEachMoney;
 //    }
-public void customerReadPurchaseHistoryOf(){
-      ReadWritePurchaseHistoryTranscription.readPurchaseHistory(this);
+    public void customerReadPurchaseHistoryOf() {
+        ReadWritePurchaseHistoryTranscription.readPurchaseHistory(this);
     }
-    
+
 }

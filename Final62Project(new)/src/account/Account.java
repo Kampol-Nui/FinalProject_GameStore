@@ -1,25 +1,28 @@
 package account;
 
-
-
-
 import person.Person;
 import java.util.Objects;
 
 public abstract class Account {
+
     private String username;
     private String password;
     private AccountStatus status;
     private Person person;
 
-    public Account(String username, String password,Person person) {
+    public Account(String username, String password, Person person) {
         this.username = username;
         this.password = password;
         this.status = AccountStatus.ACTIVE;
         this.person = person;
     }
-    
-    
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.status = AccountStatus.ACTIVE;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -55,7 +58,4 @@ public abstract class Account {
         return password;
     }
 
-    
-    
-    
 }

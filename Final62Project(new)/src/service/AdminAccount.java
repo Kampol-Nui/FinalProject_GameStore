@@ -3,7 +3,6 @@ package service;
 //import io.AllCustomer;
 import person.Person;
 import account.Account;
-import admin.io.ReadWritePurchaseHistoryTranscription;
 
 //admin.writePurchaseHistory(cus2);
 //admin.readPurchaseHistory("purchasehistory.dat",cus2);
