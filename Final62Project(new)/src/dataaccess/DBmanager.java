@@ -2,7 +2,7 @@ package dataaccess;
 
 import account.AccountStatus;
 import game.Game;
-import genarate.GetNextID;
+
 import genarate.TimeStamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.CustomerAccount;
-import service.TopupStatus;
+import service.GameStore;
+
 
 public class DBmanager {
 
@@ -35,6 +36,26 @@ public class DBmanager {
             System.out.println(ex);
         }
     }
+    
+    public static void keepGameInfo(Game game) {
+        String sql1 = "INSERT INTO GAMEINSTORE " + "(id,title,specialprice,normalprice,status)" + "VALUES(?,?,?,?,?)";
+        
+        try (Connection conn = DBconnection.getConnecting();) {
+            try (PreparedStatement pstm = conn.prepareStatement(sql1);) {
+                pstm.setLong(1, game.getId());
+                pstm.setString(2, game.getTitle());
+                pstm.setDouble(3, game.getSpecialPrice());
+                pstm.setDouble(4, game.getNormalprice());
+                pstm.setString(5, game.getStatus().name());
+                pstm.executeUpdate();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
 
     public static void topupMoney(CustomerAccount ac) {
         double lastMoney;
@@ -47,7 +68,7 @@ public class DBmanager {
                 stm.setLong(2, ac.getUniqueId());
                 stm.setString(3, ac.getUsername());
                 stm.setDouble(4, ac.getTopupMoney());
-                stm.setString(5, TopupStatus.SUCCESSFUL.name());
+               
                 stm.executeUpdate();
                 lastMoney = ac.getTopupMoney() + SelectLastMoney(ac);
                 String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + lastMoney + " WHERE id =" + ac.getUniqueId();
@@ -174,6 +195,10 @@ public class DBmanager {
                 stm.executeUpdate("DROP TABLE LIBRARY");
             } catch (SQLException ex) {
             }
+            try {
+                stm.executeUpdate("DROP TABLE GAMEINSTORE");
+            } catch (SQLException ex) {
+            }
             //try {stm.executeUpdate("CREATE TABLE customer (cus_id INT NOT NULL, cus_name VARCHAR(100),PRIMARY KEY (cus_id))");} catch (SQLException ex) {} 
             try {
                 stm.executeUpdate("CREATE TABLE CUSTOMERACCOUNT (ID BIGINT not null primary key,USERNAME VARCHAR(50),PASSWORD VARCHAR(50),MYMONEY DOUBLE)");
@@ -181,7 +206,7 @@ public class DBmanager {
             }
             try {
                 stm.executeUpdate("CREATE TABLE TOPUPBILL (ORDER_NUMBER INT not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),"
-                        + " TIMESTAMP VARCHAR(50),ID BIGINT,USERNAME VARCHAR(50),TOPUP DOUBLE,TOPUPSTATUS VARCHAR(50))");
+                        + " TIMESTAMP VARCHAR(50),ID BIGINT,USERNAME VARCHAR(50),TOPUP DOUBLE)");
             } catch (SQLException ex) {
             }
             try {
@@ -192,6 +217,11 @@ public class DBmanager {
             try {
                 stm.executeUpdate("CREATE TABLE LIBRARY (ORDER_NUMBER INT not null primary key GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),"
                         + " ID BIGINT,GAME VARCHAR(50))");
+            } catch (SQLException ex) {
+            }
+            try {
+                stm.executeUpdate("CREATE TABLE GAMEINSTORE "
+                        + " (ID VARCHAR(50),TITLE VARCHAR(50),SPECIALPRICE DOUBLE,NORMALPRICE DOUBLE,STATUS VARCHAR(50))");
             } catch (SQLException ex) {
             }
         } catch (SQLException ex) {
@@ -252,16 +282,38 @@ public class DBmanager {
     }
 
     public static long incrementLastCustomerID() {
-        long id = 0;
+        long id = 1000000000;
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
 
-            String query = ("SELECT MAX(ID) FROM CUSTOMERACCOUNT");
-
+            String query = ("SELECT MAX(ID) AS MAXID FROM CUSTOMERACCOUNT");
+            
             rs = stm.executeQuery(query);
 
-            while (rs.next()) {
+            if (rs.next()) {
+                id = rs.getLong(1);
+                id++;
+            }
+
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return id;
+    }
+    
+    public static long incrementLastGameID() {
+        long id = 2000000000;
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = ("SELECT MAX(ID) AS MAXID FROM GAMEINSTORE");
+            
+            rs = stm.executeQuery(query);
+
+            if (rs.next()) {
                 id = rs.getLong(1);
                 id++;
             }
@@ -352,7 +404,7 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return null;
+        return new CustomerAccount(username,password,AccountStatus.ACTIVE);
     }
 
     public static boolean checkRepeatGameInLibrary(CustomerAccount ac) {
@@ -403,6 +455,32 @@ public class DBmanager {
         }
         return true;
     }
+    
+    public static boolean checkRepeatGameName(GameStore store) {
+
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+            
+                String query = "SELECT * FROM GAMEINSTORE ";
+                rs = stm.executeQuery(query);
+            for (int i = 0; i < store.getGames().size(); i++) {
+                 while (rs.next()) {
+                    String gameName = rs.getString("TITLE");
+                    if (gameName.equals(store.getGames().get(i).getTitle())) {
+                        return false;
+                    }
+                }
+                
+            }
+               
+            
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return true;
+    }
 
     public static void listRecentLibrary(CustomerAccount ac) {
         String sql1 = "SELECT * FROM LIBRARY WHERE ID=" + ac.getUniqueId();
@@ -425,6 +503,40 @@ public class DBmanager {
                     String game = rs.getString("GAME");
 
                     System.out.println(game);
+
+                }
+
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+    public static void listRecentGameInStore() {
+        String sql1 = "SELECT * FROM GAMEINSTORE" ;
+        try (Connection con = DBconnection.getConnecting();) {
+            try (
+                    Statement stm = con.createStatement()) {
+
+                ResultSet rs = null;
+//                    double myEachMoney = DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
+//                    String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
+//                    try (Statement stm = con.createStatement();) {
+//
+//                        stm.executeUpdate(sql3);
+//                    } catch (SQLException ex) {
+//                  
+//                    }
+                rs = stm.executeQuery(sql1);
+                while (rs.next()) {
+
+                    long id = rs.getLong("ID");
+                    String title = rs.getString("TITLE");
+                    double specialprice = rs.getDouble("SPECIALPRICE");
+                    //double normalprice = rs.getDouble("NORMALPRICE");
+                    System.out.println(id+" "+title+" "+specialprice);
 
                 }
 

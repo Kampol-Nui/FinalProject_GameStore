@@ -8,8 +8,8 @@ import account.Account;
 //admin.readPurchaseHistory("purchasehistory.dat",cus2);
 public class AdminAccount extends Account {
 
-    public AdminAccount(String username, String password, Person person) {
-        super(username, password, person);
+    public AdminAccount(String username, String password) {
+        super(username, password);
 
     }
     

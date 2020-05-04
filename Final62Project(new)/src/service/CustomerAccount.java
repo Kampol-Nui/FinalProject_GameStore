@@ -1,6 +1,6 @@
 package service;
 
-import genarate.GetNextID;
+
 import person.Person;
 import account.Account;
 import account.AccountStatus;
@@ -20,7 +20,7 @@ public class CustomerAccount extends Account {
         super(username, password, person);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-         callKeepCustomerInfo();
+        
 
     }
 
@@ -31,13 +31,19 @@ public class CustomerAccount extends Account {
 
     }
 
-    public void genIDForThisCustomer() {
-        this.uniqueId = GetNextID.getNext();
+    
+    public void genID(){
+        if(DBmanager.incrementLastCustomerID()==1){
+            this.uniqueId = 100000000;
+            DBmanager.keepCustomerInfo(this);
+        }else{
+            this.uniqueId=DBmanager.incrementLastCustomerID();
+            DBmanager.keepCustomerInfo(this);
+        }
+        //this.uniqueId = 1000000;
     }
+    
 
-    public void callKeepCustomerInfo() {
-        DBmanager.keepCustomerInfo(this);
-    }
 
     public double getMyMoney() {
         return this.myLastMoney;
@@ -69,7 +75,8 @@ public class CustomerAccount extends Account {
     public void listBuyingHistory() {
         DBmanager.SelectTablePurchaseHistory(this);
     }
-
+    
+    
     public GameLibrary getMyLibrary() {
         return myLibrary;
     }

@@ -1,9 +1,11 @@
 
 import account.AccountStatus;
 import dataaccess.DBmanager;
-import genarate.GetNextID;
+
 import java.util.Scanner;
+import person.Person;
 import service.CustomerAccount;
+import service.GameStore;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -15,7 +17,7 @@ import service.CustomerAccount;
  * @author MINI
  */
 public class CustomerApplication {
-
+    static GameStore g1 = new GameStore("EPRIC");
     static int choice;
     static String mainMenu = "Menu:\n"
             + "1. Register\n"
@@ -32,10 +34,12 @@ public class CustomerApplication {
     static Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
+        
         mainMenu();
     }
 
     public static void mainMenu() {
+       
         do {
             System.out.print(mainMenu);
             choice = input.nextInt();
@@ -59,19 +63,24 @@ public class CustomerApplication {
                     password = input.next();
                     System.out.println("Registered\n");   
                     CustomerAccount customerAccount = new CustomerAccount(username, password, AccountStatus.ACTIVE);
-                    customerAccount.genIDForThisCustomer();
-                    customerAccount.callKeepCustomerInfo();
+                    customerAccount.genID();
+                    //customerAccount.callKeepCustomerInfo();
                     break;
                 }
                 case 2: {
+                    
                     String username = null;
                     String password = null;
                     System.out.print("Input your username: ");
                     username = input.next();
                     System.out.print("Input your password: ");
                     password = input.next();
-                    DBmanager.verifyCustomer(username, password);
-                    customerMenu(DBmanager.getObjectCustomerFrom(username, password));
+                    if(DBmanager.verifyCustomer(username, password)==false){
+                        System.out.println("Wrong Username or Password");
+                    }else{
+                    //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
+                    CustomerAccount customerAccount = new CustomerAccount(username, password, AccountStatus.ACTIVE);
+                    customerMenu(customerAccount);}
                     break;
                 }
                 case 0: {
@@ -94,9 +103,11 @@ public class CustomerApplication {
                     System.out.print("Input your money: ");
                     money = input.nextDouble();
                     customerAccount.TopupMoney(money);
+                    System.out.println(customerAccount.getUsername());
                     break;
                 }
                 case 2: {
+                    g1.listGameInStore();
                     break;
                 }
                 case 3: {

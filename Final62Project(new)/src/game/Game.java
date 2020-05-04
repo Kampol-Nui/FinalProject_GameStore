@@ -1,24 +1,36 @@
 package game;
 
 
+import dataaccess.DBmanager;
 import java.util.Objects;
 
 
 public class Game {
-    private String id;
+    private long id;
     private String title;
     private double specialprice;
     private double normalprice;
     private GameStatus status;
 
-    public Game(String id, String title, double price) {
-        this.id = id;
+    public Game(String title, double price) {
+        
         this.title = title;
         this.specialprice = price;
         this.normalprice = price;
         this.status = GameStatus.ONSALED;
+        
     }
 
+    public void genID(){
+        if(DBmanager.incrementLastGameID()==1){
+            this.id = 200000000;
+            DBmanager.keepGameInfo(this);
+        }else{
+            this.id=DBmanager.incrementLastGameID();
+            DBmanager.keepGameInfo(this);
+        }
+        //this.uniqueId = 1000000;
+    }
     public void setStatus(GameStatus status) {
         this.status = status;
     }
@@ -73,6 +85,14 @@ public class Game {
 
     public void setPrice(double price) {
         this.specialprice = price;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public double getSpecialprice() {
+        return specialprice;
     }
 
     
