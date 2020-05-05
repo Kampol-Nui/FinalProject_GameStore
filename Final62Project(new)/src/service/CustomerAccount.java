@@ -20,7 +20,7 @@ public class CustomerAccount extends Account {
         super(username, password, person);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-        
+        this.genID();
 
     }
 
@@ -28,16 +28,28 @@ public class CustomerAccount extends Account {
         super(username, password);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
+        
+        
+    }
 
+    public CustomerAccount(long id, String username, String password, AccountStatus accountStatus) {
+        super(username, password);
+        this.myCart = new Cart();
+        this.myLibrary = new GameLibrary(this);
+        this.uniqueId = id;
     }
 
     
     public void genID(){
         if(DBmanager.incrementLastCustomerID()==1){
-            this.uniqueId = 100000000;
+            
+            
+                this.uniqueId = 100000000;
             DBmanager.keepCustomerInfo(this);
         }else{
-            this.uniqueId=DBmanager.incrementLastCustomerID();
+            
+            
+                this.uniqueId=DBmanager.incrementLastCustomerID();
             DBmanager.keepCustomerInfo(this);
         }
         //this.uniqueId = 1000000;

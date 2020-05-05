@@ -60,7 +60,7 @@ public class DBmanager {
 
     public static void topupMoney(CustomerAccount ac) {
         double lastMoney;
-        String sql1 = "INSERT INTO TOPUPBIll " + "(timestamp,id,username,topup,topupstatus)" + "VALUES(?,?,?,?,?)";
+        String sql1 = "INSERT INTO TOPUPBIll " + "(timestamp,id,username,topup)" + "VALUES(?,?,?,?)";
         //String sql2 = "UPDATE CUSTOMERACCOUNT set mymoney=" + ac.getMyMoney() + " WHERE id =" + ac.getUniqueId();
         try (Connection con = DBconnection.getConnecting();) {
             try (
@@ -260,7 +260,7 @@ public class DBmanager {
         }
     }
 
-    public static boolean verifyCustomer(String username, String password) {
+    public static boolean loginCustomer(String username, String password) {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
@@ -272,6 +272,28 @@ public class DBmanager {
                 String DBusername = rs.getString("USERNAME");
                 String DBpassword = rs.getString("PASSWORD");
                 if (username.equals(DBusername) && password.equals(DBpassword)) {
+                    return true;
+                }
+
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return false;
+    }
+     public static boolean verifyCustomer(String username, String password) {
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = "SELECT * FROM CUSTOMERACCOUNT";
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                String DBusername = rs.getString("USERNAME");
+                String DBpassword = rs.getString("PASSWORD");
+                if (username.equals(DBusername) || password.equals(DBpassword)) {
                     return true;
                 }
 
@@ -406,16 +428,16 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return new CustomerAccount(username,password,AccountStatus.ACTIVE);
+        return new CustomerAccount(id,username,password,AccountStatus.ACTIVE);
     }
 
-    public static boolean checkRepeatGameInLibrary(CustomerAccount ac) {
+    public static int checkRepeatGameInLibrary(CustomerAccount ac) {
 
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
             if (ac.getMyCart().getItemInCart().isEmpty()) {
-                return false;
+                return 0;
             }
             for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
                 String query = "SELECT * FROM LIBRARY WHERE ID= " + ac.getUniqueId() + "AND GAME='" + ac.getMyCart().getItemInCart().get(i).getTitle() + "'";
@@ -424,7 +446,7 @@ public class DBmanager {
                 while (rs.next()) {
                     String gameName = rs.getString("GAME");
                     if (gameName.equals(ac.getMyCart().getItemInCart().get(i).getTitle())) {
-                        return false;
+                        return -1;
                     }
                 }
             }
@@ -432,7 +454,7 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return true;
+        return 1;
     }
 
     public static boolean checkRepeatName(CustomerAccount ac) {

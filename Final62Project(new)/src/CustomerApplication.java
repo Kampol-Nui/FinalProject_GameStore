@@ -75,7 +75,7 @@ public class CustomerApplication {
                     username = input.next();
                     System.out.print("Input your password: ");
                     password = input.next();
-                    if(DBmanager.verifyCustomer(username, password)==false){
+                    if(DBmanager.loginCustomer(username, password)==false){
                         System.out.println("Wrong Username or Password");
                     }else{
                     //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
