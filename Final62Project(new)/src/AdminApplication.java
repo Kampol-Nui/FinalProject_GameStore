@@ -33,18 +33,19 @@ public class AdminApplication {
     }
 
     public static void adminMenu() {
+        AdminAccount admin = new AdminAccount("AdminM", "thisispassword");
         do {
             System.out.print(adminMenu);
             choice = input.nextInt();
 
             switch (choice) {
                 case 1: {
-                    DBmanager.seeDataofAllCustomer();
+                    DBmanager.seeDataofAllCustomer(admin);
                     break;
                 }
                 case 2: {
 
-                    AdminAccount admin = new AdminAccount("AdminM", "thisispassword");
+                    
                     choseGametoAdd(admin);
 
                     break;
@@ -60,55 +61,67 @@ public class AdminApplication {
 
     }
 
-//    public static void choseGametoAdd(AdminAccount admin) {
-//     Game game1 = new Game("TOMB RIDER", 20);
-//     Game game2 = new Game("RE7", 60);
-//     Game game3 = new Game("RE8", 100);
-//     Game game4 = new Game("RE9", 40);
-//        int chose = 0;
-//        do {
-//            System.out.println(choseMenu);
-//            chose = input.nextInt();
-//            switch (chose) {
-//
-//                case 1:{
-//                    g1.addGameFrom(admin, game1);
-//                    if(DBmanager.checkRepeatGameName(g1)==false){
-//                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
-//                    }else{
-//                        game1.genID();
-//                    }
-//                    break;
-//                }
-//                case 2:{
-//                    g1.addGameFrom(admin, game2);
-//                    if(DBmanager.checkRepeatGameName(g1)==false){
-//                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
-//                    }else{
-//                        game2.genID();
-//                    }
-//                    break;
-//                }
-//                case 3:{
-//                    g1.addGameFrom(admin, game3);
-//                    if(DBmanager.checkRepeatGameName(g1)==false){
-//                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
-//                    }else{
-//                        game3.genID();
-//                    }
-//                    break;
-//                }
-//                case 4:{
-//                    g1.addGameFrom(admin, game4);
-//                    if(DBmanager.checkRepeatGameName(g1)==false){
-//                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
-//                    }else{
-//                        game4.genID();
-//                    }
-//                    break;
-//                }
-//            }
-//        } while (chose != 0);
-//    }
+    public static void choseGametoAdd(AdminAccount admin) {
+     Game game1 = new Game("TOMB RIDER", 20);
+     Game game2 = new Game("RE7", 60);
+     Game game3 = new Game("RE8", 100);
+     Game game4 = new Game("RE9", 40);
+        int chose = 0;
+        do {
+            System.out.println(choseMenu);
+            chose = input.nextInt();
+            switch (chose) {
+
+                case 1:{
+                    g1.addGameFrom(admin, game1);
+                    g1.addGameFrom(admin, game2);
+                    g1.addGameFrom(admin, game3);
+                    g1.addGameFrom(admin, game4);
+                    if(DBmanager.checkRepeatGameName(g1)==false){
+                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
+                    }else{
+                        game1.genID();
+                    }
+                    break;
+                }
+                case 2:{
+                    g1.addGameFrom(admin, game1);
+                    g1.addGameFrom(admin, game2);
+                    g1.addGameFrom(admin, game3);
+                    g1.addGameFrom(admin, game4);
+                    if(DBmanager.checkRepeatGameName(g1)==false){
+                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
+                    }else{
+                        game2.genID();
+                    }
+                    break;
+                }
+                case 3:{
+                    g1.addGameFrom(admin, game1);
+                    g1.addGameFrom(admin, game2);
+                    g1.addGameFrom(admin, game3);
+                    g1.addGameFrom(admin, game4);
+                    if(DBmanager.checkRepeatGameName(g1)==false){
+                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
+                    }else{
+                        game3.genID();
+                    }
+                    break;
+                }
+                case 4:{
+                    g1.addGameFrom(admin, game1);
+                    g1.addGameFrom(admin, game2);
+                    g1.addGameFrom(admin, game3);
+                    g1.addGameFrom(admin, game4);
+                    if(DBmanager.checkRepeatGameName(g1)==false){
+                        System.out.println("เกมในดาต้าเบสซ้ำอะ");
+                    }else{
+                        game4.genID();
+                    }
+                    break;
+                }
+            }
+        } while (chose != 0);
+    }
 
 }

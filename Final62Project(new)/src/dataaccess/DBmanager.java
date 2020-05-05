@@ -30,11 +30,11 @@ public class DBmanager {
                 pstm.setDouble(4, ac.getMyMoney());
                 pstm.executeUpdate();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
     
@@ -50,11 +50,11 @@ public class DBmanager {
                 pstm.setString(5, game.getStatus().name());
                 pstm.executeUpdate();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println(ex.getMessage());
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -81,11 +81,11 @@ public class DBmanager {
                     System.out.println(ex.getMessage());
                 }
             } catch (SQLException ex) {
-                ex.getMessage();
+               System.out.println(ex.getMessage());
             }
         } catch (SQLException ex) {
-            ex.getMessage();
-        }
+           System.out.println(ex.getMessage());
+        } 
     }
 
     public static void SelectTablePurchaseHistory(CustomerAccount ac) {
@@ -125,7 +125,7 @@ public class DBmanager {
 
                         stm.executeUpdate(sql3);
                     } catch (SQLException ex) {
-
+                        System.out.println(ex);
                     }
                     pstm.setString(1, new TimeStamp().toString());
                     pstm.setDouble(2, ac.getUniqueId());
@@ -371,7 +371,7 @@ public class DBmanager {
                 }
 
             } catch (SQLException ex) {
-                ex.getMessage();
+                System.out.println(ex.getMessage());
             }
             String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + ac.getMyMoney() + " WHERE id =" + ac.getUniqueId();
             try (Statement stm = con.createStatement();) {
@@ -464,7 +464,7 @@ public class DBmanager {
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
             
-                String query = "SELECT * FROM GAMEINSTORE ";
+                String query = "SELECT * FROM GAMEINSTORE";
                 rs = stm.executeQuery(query);
             for (int i = 0; i < store.getGames().size(); i++) {
                  while (rs.next()) {
