@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DBconnection {
+public abstract class DBconnection {
 
     private static final String DRIVER = "org.apache.derby.jdbc.ClientDriver";
     private static final String URL = "jdbc:derby://localhost:1527/finalproject";

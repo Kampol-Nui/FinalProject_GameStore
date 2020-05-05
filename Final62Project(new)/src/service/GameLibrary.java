@@ -1,6 +1,7 @@
 package service;
 
 
+import account.AccountStatus;
 import admin.io.ReadWritePurchaseHistoryTranscription;
 import game.Game;
 import dataaccess.DBmanager;
@@ -17,7 +18,10 @@ public class GameLibrary {
     }
 
     public void addGameFromCartToLibrary() {
-        if(DBmanager.checkRepeatGameInLibrary(ac) == -1){
+        if(this.ac.getStatus()==AccountStatus.BLACKLISTED){
+            System.out.println("Your Account is Banned");
+        }
+        else if(DBmanager.checkRepeatGameInLibrary(ac) == -1){
             System.out.println("คุณมีเกมนี้อยู่แล้ว");
                       
         }else if(DBmanager.checkRepeatGameInLibrary(ac) == 0){

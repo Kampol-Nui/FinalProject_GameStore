@@ -9,7 +9,7 @@ import java.util.Objects;
 public class GameStore implements AdminService {
 
     private ArrayList<Game> gameStore;
-    private GameStatus gamestatus;
+    //private GameStatus gamestatus;
     private String name;
     //private double[] 
     public GameStore(String name) {

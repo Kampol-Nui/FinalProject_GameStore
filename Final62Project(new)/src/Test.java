@@ -159,7 +159,9 @@ public class Test {
 //        customer.genID();
         AdminAccount admin = new AdminAccount("NobodyFound", "007");
         AdminAccount admin2 = new AdminAccount("ADM", "123456789");
-
+        
+        admin.setCustomerStatusTo(customer, AccountStatus.BLACKLISTED);
+        
         GameStore gameStore = new GameStore("EPRICK");
 
         Game game1 = new Game("TOMB RIDER", 20);
@@ -222,7 +224,7 @@ public class Test {
 //        cus1.listBuyingHistory();
 //        
 //        cus1.getMyLibrary().listMyGameInLibrary(cus1);
-
+        
         customer.getMyLibrary().addGameFromCartToLibrary();
 
         customer.listBuyingHistory();

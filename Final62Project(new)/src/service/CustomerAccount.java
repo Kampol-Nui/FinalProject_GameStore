@@ -12,6 +12,7 @@ public class CustomerAccount extends Account {
     private GameLibrary myLibrary;
     private double topupMoney = 0;
     protected double myLastMoney;
+    private AccountStatus status;
     //public double myEachMoney;
 
 //    public CustomerAccount(String username, String password, AccountStatus status, Person person) {
@@ -25,7 +26,7 @@ public class CustomerAccount extends Account {
         super(username, password);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-
+        this.status = status;
     }
 
     public CustomerAccount(long id, String username, String password, AccountStatus accountStatus) {
@@ -33,6 +34,7 @@ public class CustomerAccount extends Account {
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
         this.uniqueId = id;
+        this.status = accountStatus;
     }
 
     public void genID() {
@@ -101,5 +103,15 @@ public class CustomerAccount extends Account {
         }
 
     }
+
+    public void setStatus(AdminAccount admin,AccountStatus status) {
+        this.status = status;
+    }
+
+    public AccountStatus getStatus() {
+        return status;
+    }
+        
+        
 
 }
