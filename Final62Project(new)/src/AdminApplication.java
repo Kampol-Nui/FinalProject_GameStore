@@ -39,7 +39,7 @@ public class AdminApplication {
 
             switch (choice) {
                 case 1: {
-                    DBmanager.seeDataofAllCustomer(ac);
+                    DBmanager.seeDataofAllCustomer();
                     break;
                 }
                 case 2: {
