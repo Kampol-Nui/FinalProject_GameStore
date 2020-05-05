@@ -20,16 +20,16 @@ public class Game {
         
     }
 
-    public void genID(){
-        if(DBmanager.incrementLastGameID()==1){
-            this.id = 200000000;
-            DBmanager.keepGameInfo(this);
-        }else{
-            this.id=DBmanager.incrementLastGameID();
-            DBmanager.keepGameInfo(this);
-        }
-        //this.uniqueId = 1000000;
-    }
+//    public void genID(){
+//        if(DBmanager.incrementLastGameID()==1){
+//            this.id = 200000000;
+//            DBmanager.keepGameInfo(this);
+//        }else{
+//            this.id=DBmanager.incrementLastGameID();
+//            DBmanager.keepGameInfo(this);
+//        }
+//        //this.uniqueId = 1000000;
+//    }
     public void setStatus(GameStatus status) {
         this.status = status;
     }

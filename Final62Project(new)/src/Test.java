@@ -237,6 +237,6 @@ public class Test {
 //        
         customer.customerReadPurchaseHistoryOf();
 
-        //admin.seeInfoOfAllCustomer();
+        admin.seeInfoOfAllCustomer();
     }
 }

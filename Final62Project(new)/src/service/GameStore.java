@@ -17,9 +17,9 @@ public class GameStore implements AdminService {
         gameStore = new ArrayList<>();
 
     }
-    public void listGameInStore(){
-        DBmanager.listRecentGameInStore();
-    }
+//    public void listGameInStore(){
+//        DBmanager.listRecentGameInStore();
+//    }
     public boolean listGameFromStore() {
         System.out.println("************************ เกมในร้านค้า " + this + " *************************");
         if (this.gameStore.isEmpty()) {

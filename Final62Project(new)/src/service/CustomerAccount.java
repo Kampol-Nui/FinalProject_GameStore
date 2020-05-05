@@ -16,13 +16,13 @@ public class CustomerAccount extends Account {
     protected double myLastMoney;
     //public double myEachMoney;
 
-    public CustomerAccount(String username, String password, AccountStatus status, Person person) {
-        super(username, password, person);
-        this.myCart = new Cart();
-        this.myLibrary = new GameLibrary(this);
-        this.genID();
-
-    }
+//    public CustomerAccount(String username, String password, AccountStatus status, Person person) {
+//        super(username, password, person);
+//        this.myCart = new Cart();
+//        this.myLibrary = new GameLibrary(this);
+//        this.genID();
+//
+//    }
 
     public CustomerAccount(String username, String password, AccountStatus status) {
         super(username, password);
