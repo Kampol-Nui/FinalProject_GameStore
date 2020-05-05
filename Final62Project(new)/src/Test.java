@@ -1,6 +1,5 @@
 
 //import io.AllCustomer;
-
 import service.AdminAccount;
 import person.Person;
 import account.AccountStatus;
@@ -22,9 +21,10 @@ import service.CustomerAccount;
  * @author MINI
  */
 public class Test {
- //static GameStore g1 = new GameStore("EPRIC");
-static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE);
- static int choice;
+    //static GameStore g1 = new GameStore("EPRIC");
+
+    static CustomerAccount customer = new CustomerAccount(null, null, AccountStatus.ACTIVE);
+    static int choice;
     static String mainMenu = "Menu:\n"
             + "1. Register\n"
             + "2. Login\n"
@@ -39,50 +39,51 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
             + "Select menu: ";
     static Scanner input = new Scanner(System.in);
 
-     public static void mainMenu() {
-       
+    public static void mainMenu() {
+
         do {
             System.out.print(mainMenu);
             choice = input.nextInt();
 
             switch (choice) {
                 case 1: {
-                    String phone = null;
-                    String email = null;
-                    String name = null;
+//                    String phone = null;
+//                    String email = null;
+//                    String name = null;
                     String username = null;
                     String password = null;
-                    System.out.print("Input your name: ");
-                    name = input.next();
-                    System.out.print("Input your email: ");
-                    email = input.next();
-                    System.out.print("Input your phone: ");
-                    phone = input.next();
+//                    System.out.print("Input your name: ");
+//                    name = input.next();
+//                    System.out.print("Input your email: ");
+//                    email = input.next();
+//                    System.out.print("Input your phone: ");
+//                    phone = input.next();
                     System.out.print("Input your username: ");
                     username = input.next();
                     System.out.print("Input your password: ");
                     password = input.next();
-                    System.out.println("Registered\n");   
-                    cus2 = new CustomerAccount(username, password, AccountStatus.ACTIVE);
-                    cus2.genID();
+                    System.out.println("Registered\n");
+                    customer = new CustomerAccount(username, password, AccountStatus.ACTIVE);
+                    customer.genID();
                     //customerAccount.callKeepCustomerInfo();
                     break;
                 }
                 case 2: {
-                    
+
                     String username = null;
                     String password = null;
                     System.out.print("Input your username: ");
                     username = input.next();
                     System.out.print("Input your password: ");
                     password = input.next();
-                    if(DBmanager.loginCustomer(username, password)==false){
+                    if (DBmanager.loginCustomer(username, password) == false) {
                         System.out.println("Wrong Username or Password");
-                    }else{
-                    //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
-                    cus2 = DBmanager.getObjectCustomerFrom(username, password);
-                    
-                    //customerMenu(customerAccount);
+
+                    } else {
+                        //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
+                        customer = DBmanager.getObjectCustomerFrom(username, password);
+                        return;
+                        //customerMenu(customerAccount);
                     }
                     break;
                 }
@@ -94,14 +95,11 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
         } while (choice != 0);
 
     }
+
     public static void main(String[] args) {
 //       dataaccess.DBmanager.CreateTable();
-           
-    
-   
-        
+
         mainMenu();
-    
 
 //   do {
 //            System.out.print(mainMenu);
@@ -125,8 +123,8 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
 //                    System.out.print("Input your password: ");
 //                    password = input.next();
 //                    System.out.println("Registered\n");   
-//                    cus2 = new CustomerAccount(username, password, AccountStatus.ACTIVE);
-//                    cus2.genID();
+//                    customer = new CustomerAccount(username, password, AccountStatus.ACTIVE);
+//                    customer.genID();
 //                    //customerAccount.callKeepCustomerInfo();
 //                    break;
 //                }
@@ -142,7 +140,7 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
 //                        System.out.println("Wrong Username or Password");
 //                    }else{
 //                    //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
-//                    cus2 = DBmanager.getObjectCustomerFrom(username, password);
+//                    customer = DBmanager.getObjectCustomerFrom(username, password);
 //                    
 //                    //customerMenu(customerAccount);
 //                    }
@@ -154,49 +152,40 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
 //
 //            }
 //        } while (choice != 0);
-
-        
-
-   
 //        CustomerAccount cus1 = new CustomerAccount("Kampol", "kkkkddd", AccountStatus.ACTIVE);
-//        CustomerAccount cus2 = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE);
+//        CustomerAccount customer = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE);
 //        CustomerAccount cus3 = new CustomerAccount("John", "Wick", AccountStatus.ACTIVE);
 //        cus1.genID();
-//        cus2.genID();
+//        customer.genID();
         AdminAccount admin = new AdminAccount("NobodyFound", "007");
         AdminAccount admin2 = new AdminAccount("ADM", "123456789");
-        
-        
+
         GameStore gameStore = new GameStore("EPRICK");
-       
-        
-        
+
         Game game1 = new Game("TOMB RIDER", 20);
         Game game2 = new Game("RE7", 60);
         Game game3 = new Game("RE8", 100);
         Game game4 = new Game("RE9", 40);
-        
+
         System.out.println("=============================TEST FOR GAMESTORE=========================================");
 
         gameStore.addGameFrom(admin, game1);
         gameStore.addGameFrom(admin, game2);
         gameStore.addGameFrom(admin, game3);
         gameStore.addGameFrom(admin, game4);
-        
-        System.out.println(gameStore.changeGameStatusFrom(admin, "RE7", GameStatus.DISCOUNTED,50));
-        
+
+        System.out.println(gameStore.changeGameStatusFrom(admin, "RE7", GameStatus.DISCOUNTED, 50));
+
         gameStore.listGameFromStore();
-        
+
         //gameStore.removeGame(admin, game3);
-        
         gameStore.listGameFromStore();
-        
+
         //gameStore.removeGame(admin, game4);
-        
         gameStore.listGameFromStore();
-        
+
         System.out.println("=============================TEST FOR CART=========================================");
-        
+
 //        cus1.getMyCart().addGameToCart(gameStore, "RE7");
 //        cus1.getMyCart().addGameToCart(gameStore, "RE8");
 //        cus1.getMyCart().addGameToCart(gameStore, "RE7");
@@ -208,24 +197,22 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
 //        cus1.getMyCart().removeGameFromCart("RE7");
 //        
 //        cus1.getMyCart().listGameFromCart();
-        
         System.out.println("======================================================================");
-        
-        cus2.getMyCart().addGameToCart(gameStore, "RE7");       
+
+        customer.getMyCart().addGameToCart(gameStore, "RE7");
         //cus2.getMyCart().addGameToCart(gameStore, "TOMB RIDER");
         //cus2.getMyCart().addGameToCart(gameStore, "RE7");
         //cus2.getMyCart().addGameToCart(gameStore, "RE8");
-        
+
 //        cus1.getMyCart().listGameFromCart();
-        
         System.out.println("======================================================================");
-            
+
 //        cus1.getMyCart().listGameFromCart();
 //        
 //        System.out.println("=============================TEST FOR BUYING=========================================");
 //        
 //        cus1.TopupMoney(1000);
-        cus2.TopupMoney(500);
+        customer.TopupMoney(500);
 //        
 //        cus1.TopupMoney(0);
 //        cus1.TopupMoney(-50);
@@ -235,23 +222,21 @@ static CustomerAccount cus2 = new CustomerAccount(null,null,AccountStatus.ACTIVE
 //        cus1.listBuyingHistory();
 //        
 //        cus1.getMyLibrary().listMyGameInLibrary(cus1);
-        
-        cus2.getMyLibrary().addGameFromCartToLibrary();
-        
-        cus2.listBuyingHistory();
-        
-        cus2.getMyLibrary().listMyGameInLibrary(cus2);
-        
-//        cus2.getMyLibrary().addGameFromCartToLibrary();
+
+        customer.getMyLibrary().addGameFromCartToLibrary();
+
+        customer.listBuyingHistory();
+
+        customer.getMyLibrary().listMyGameInLibrary(customer);
+
+//        customer.getMyLibrary().addGameFromCartToLibrary();
 //        
-//        cus2.getMyLibrary().listMyGameInLibrary(cus2);
+//        customer.getMyLibrary().listMyGameInLibrary(customer);
 //        
-//        cus2.listBuyingHistory();
+//        customer.listBuyingHistory();
 //        
-        cus2.customerReadPurchaseHistoryOf();
-        
+        customer.customerReadPurchaseHistoryOf();
+
         //admin.seeInfoOfAllCustomer();
-    }    
+    }
 }
-
-
