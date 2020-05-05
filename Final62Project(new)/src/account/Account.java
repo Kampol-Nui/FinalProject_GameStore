@@ -1,6 +1,6 @@
 package account;
 
-import person.Person;
+
 import java.util.Objects;
 
 public abstract class Account {

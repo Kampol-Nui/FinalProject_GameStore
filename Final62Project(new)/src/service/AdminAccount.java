@@ -1,7 +1,7 @@
 package service;
 
 //import io.AllCustomer;
-import person.Person;
+
 import account.Account;
 import account.AccountStatus;
 import dataaccess.DBmanager;
