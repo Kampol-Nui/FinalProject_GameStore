@@ -17,6 +17,8 @@ public class AdminAccount extends Account {
     public void seeInfoOfAllCustomer(){
         DBmanager.seeDataofAllCustomer(this);
     }
+    
+
 }
     
 

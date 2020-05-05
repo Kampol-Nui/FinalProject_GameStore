@@ -23,12 +23,12 @@ public class GameLibrary {
         }else if(DBmanager.checkRepeatGameInLibrary(ac) == 0){
             System.out.println("คุณไม่มีเกมที่จะเพิ่มลงในไลบราลี่");
         }
-        else if (ac.getMyCart().getTotalprice() <= DBmanager.SelectLastMoney(ac)) {
+        else if (ac.getMyCart().getTotalprice() <= DBmanager.selectLastMoney(ac)) {
             ac.getMyCart().calculateTotalPrice();
             this.myGameLibrary = (ArrayList<Game>) ac.getMyCart().itemInCart.clone();
-            double oldmoney = dataaccess.DBmanager.SelectLastMoney(ac);
-            ac.myLastMoney = dataaccess.DBmanager.SelectLastMoney(ac) - ac.getMyCart().getTotalprice();
-            DBmanager.PurchaseGame(ac);
+            double oldmoney = dataaccess.DBmanager.selectLastMoney(ac);
+            ac.myLastMoney = dataaccess.DBmanager.selectLastMoney(ac) - ac.getMyCart().getTotalprice();
+            DBmanager.purchaseGame(ac);
             ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac);
             ac.getMyCart().itemInCart.clear();
             System.out.println("ยอดเงินก่อนชำระ : " + oldmoney + " ยอดเงินคงเหลือหลังชำระ : " + ac.getMyMoney());
@@ -42,6 +42,7 @@ public class GameLibrary {
         try {
             System.out.println("************************ MY Library *************************");
              dataaccess.DBmanager.listRecentLibrary(ac);
+            System.out.println("*************************************************************");
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
             

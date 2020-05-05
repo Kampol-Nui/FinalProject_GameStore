@@ -1,7 +1,5 @@
 package service;
 
-
-import person.Person;
 import account.Account;
 import account.AccountStatus;
 import admin.io.ReadWritePurchaseHistoryTranscription;
@@ -23,13 +21,11 @@ public class CustomerAccount extends Account {
 //        this.genID();
 //
 //    }
-
     public CustomerAccount(String username, String password, AccountStatus status) {
         super(username, password);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-        
-        
+
     }
 
     public CustomerAccount(long id, String username, String password, AccountStatus accountStatus) {
@@ -39,23 +35,18 @@ public class CustomerAccount extends Account {
         this.uniqueId = id;
     }
 
-    
-    public void genID(){
-        if(DBmanager.incrementLastCustomerID()==1){
-            
-            
-                this.uniqueId = 100000000;
+    public void genID() {
+        if (DBmanager.incrementLastCustomerID() == 1) {
+
+            this.uniqueId = 100000000;
             DBmanager.keepCustomerInfo(this);
-        }else{
-            
-            
-                this.uniqueId=DBmanager.incrementLastCustomerID();
+        } else {
+
+            this.uniqueId = DBmanager.incrementLastCustomerID();
             DBmanager.keepCustomerInfo(this);
         }
         //this.uniqueId = 1000000;
     }
-    
-
 
     public double getMyMoney() {
         return this.myLastMoney;
@@ -69,7 +60,7 @@ public class CustomerAccount extends Account {
         return this.myCart;
     }
 
-    public void TopupMoney(double topupmoney) {
+    public void topupMoney(double topupmoney) {
         this.topupMoney = topupmoney;
         if (this.topupMoney <= 0) {
             System.out.println("Please insert your money");
@@ -85,10 +76,9 @@ public class CustomerAccount extends Account {
     }
 
     public void listBuyingHistory() {
-        DBmanager.SelectTablePurchaseHistory(this);
+        DBmanager.selectTablePurchaseHistory(this);
     }
-    
-    
+
     public GameLibrary getMyLibrary() {
         return myLibrary;
     }

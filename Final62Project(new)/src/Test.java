@@ -212,7 +212,7 @@ public class Test {
 //        System.out.println("=============================TEST FOR BUYING=========================================");
 //        
 //        cus1.TopupMoney(1000);
-        customer.TopupMoney(500);
+        customer.topupMoney(500);
 //        
 //        cus1.TopupMoney(0);
 //        cus1.TopupMoney(-50);

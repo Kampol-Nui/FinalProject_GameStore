@@ -52,7 +52,7 @@ public class DBmanager {
                 stm.setDouble(4, ac.getTopupMoney());
                
                 stm.executeUpdate();
-                lastMoney = ac.getTopupMoney() + SelectLastMoney(ac);
+                lastMoney = ac.getTopupMoney() + selectLastMoney(ac);
                 String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + lastMoney + " WHERE id =" + ac.getUniqueId();
                 try (Statement stmm = con.createStatement();) {
                     stmm.executeUpdate(sql2);
@@ -69,7 +69,7 @@ public class DBmanager {
         } 
     }
 
-    public static void SelectTablePurchaseHistory(CustomerAccount ac) {
+    public static void selectTablePurchaseHistory(CustomerAccount ac) {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             ResultSet rs = null;
@@ -94,13 +94,13 @@ public class DBmanager {
         }
     }
 
-    public static void PurchaseGame(CustomerAccount ac) {
+    public static void purchaseGame(CustomerAccount ac) {
         String sql1 = "INSERT INTO PURCHASEHISTORY " + "(timestamp,id,username,game,totalprice,mymoney)" + "VALUES(?,?,?,?,?,?)";
         try (Connection con = DBconnection.getConnecting();) {
             try (
                     PreparedStatement pstm = con.prepareStatement(sql1);) {
                 for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
-                    double myEachMoney = DBmanager.SelectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
+                    double myEachMoney = DBmanager.selectLastMoney(ac) - ac.getMyCart().getEachGamePrice(i);
                     String sql3 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + myEachMoney + " WHERE id =" + ac.getUniqueId();
                     try (Statement stm = con.createStatement();) {
 
@@ -136,7 +136,7 @@ public class DBmanager {
 
     }
 
-    public static double SelectLastMoney(CustomerAccount ac) {
+    public static double selectLastMoney(CustomerAccount ac) {
         double money = 0;
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
@@ -158,7 +158,7 @@ public class DBmanager {
         return money;
     }
 
-    public static void CreateTable() {
+    public static void createTable() {
         try (Connection con = dataaccess.DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
             try {
