@@ -227,7 +227,7 @@ public class Test {
 
         customer.listBuyingHistory();
 
-        customer.getMyLibrary().listMyGameInLibrary(customer);
+        customer.listMyGameInLibrary();
 
 //        customer.getMyLibrary().addGameFromCartToLibrary();
 //        

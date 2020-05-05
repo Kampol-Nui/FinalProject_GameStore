@@ -89,5 +89,17 @@ public class CustomerAccount extends Account {
     public void customerReadPurchaseHistoryOf() {
         ReadWritePurchaseHistoryTranscription.readPurchaseHistory(this);
     }
+    
+        public void listMyGameInLibrary() {
+        try {
+            System.out.println("************************ MY Library *************************");
+             dataaccess.DBmanager.listRecentLibrary(this);
+            System.out.println("*************************************************************");
+        } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            
+        }
+
+    }
 
 }

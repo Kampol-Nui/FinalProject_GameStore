@@ -38,16 +38,6 @@ public class GameLibrary {
 
     }
 
-    public void listMyGameInLibrary(CustomerAccount ac) {
-        try {
-            System.out.println("************************ MY Library *************************");
-             dataaccess.DBmanager.listRecentLibrary(ac);
-            System.out.println("*************************************************************");
-        } catch (NullPointerException ex) {
-            System.out.println(ex.getMessage());
-            
-        }
 
-    }
 
 }

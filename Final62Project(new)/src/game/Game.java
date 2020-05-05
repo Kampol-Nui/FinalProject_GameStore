@@ -70,9 +70,9 @@ public class Game {
         this.specialprice = price;
     }
 
-    public long getId() {
-        return id;
-    }
+//    public long getId() {
+//        return id;
+//    }
 
 
 
