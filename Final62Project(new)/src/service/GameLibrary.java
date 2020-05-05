@@ -17,9 +17,11 @@ public class GameLibrary {
     }
 
     public void addGameFromCartToLibrary() {
-        if(DBmanager.checkRepeatGameInLibrary(ac) == false){
+        if(DBmanager.checkRepeatGameInLibrary(ac) == -1){
             System.out.println("คุณมีเกมนี้อยู่แล้ว");
                       
+        }else if(DBmanager.checkRepeatGameInLibrary(ac) == 0){
+            System.out.println("คุณไม่มีเกมที่จะเพิ่มลงในไลบราลี่");
         }
         else if (ac.getMyCart().getTotalprice() <= DBmanager.SelectLastMoney(ac)) {
             ac.getMyCart().calculateTotalPrice();
@@ -27,9 +29,9 @@ public class GameLibrary {
             double oldmoney = dataaccess.DBmanager.SelectLastMoney(ac);
             ac.myLastMoney = dataaccess.DBmanager.SelectLastMoney(ac) - ac.getMyCart().getTotalprice();
             DBmanager.PurchaseGame(ac);
+            ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac);
             ac.getMyCart().itemInCart.clear();
             System.out.println("ยอดเงินก่อนชำระ : " + oldmoney + " ยอดเงินคงเหลือหลังชำระ : " + ac.getMyMoney());
-            ReadWritePurchaseHistoryTranscription.writePurchaseHistory(ac);
         } else {
             System.out.println("จำนวนเงินในกระเป๋าของคุณไม่เพียงพอ โปรดเติมเงินของคุณ");
         }

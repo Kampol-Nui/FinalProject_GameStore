@@ -42,7 +42,8 @@ public class ReadWritePurchaseHistoryTranscription {
                 BufferedWriter out = new BufferedWriter(fwt)
                 ) {
             ResultSet rs = null;
-            rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId());
+            for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
+                rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId()+"and GAME='"+ac.getMyCart().getItemInCart().get(i).getTitle()+"'");
             while (rs.next()) {
                 String timestamp = rs.getString("TIMESTAMP");
                 long id = rs.getLong("ID");
@@ -53,6 +54,9 @@ public class ReadWritePurchaseHistoryTranscription {
                 
                 out.write(timestamp + " " + id + " " + username + " " + game + " " + totalprice + " " + mymoney + "\n");
             }
+                
+            }
+            
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
