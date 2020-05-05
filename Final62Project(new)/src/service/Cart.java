@@ -32,7 +32,7 @@ public class Cart implements CustomerService {
     public boolean listGameFromCart() {
         System.out.println("************************ เกมในตระกร้าของฉัน *************************");
         if (itemInCart.isEmpty()) {
-            System.out.println("คุณยีงไม่มีเกมในตระกร้า");
+            System.out.println("คุณยังไม่มีเกมในตระกร้า");
             System.out.println("******************************************************************");
             return false;
         }

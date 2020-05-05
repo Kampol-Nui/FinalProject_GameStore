@@ -1,23 +1,19 @@
 package game;
 
-
-import dataaccess.DBmanager;
-
-
 public class Game {
-    private long id;
+
     private String title;
     private double specialprice;
     private double normalprice;
     private GameStatus status;
 
     public Game(String title, double price) {
-        
+
         this.title = title;
         this.specialprice = price;
         this.normalprice = price;
         this.status = GameStatus.ONSALED;
-        
+
     }
 
 //    public void genID(){
@@ -34,15 +30,6 @@ public class Game {
         this.status = status;
     }
 
-    
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
-    }
-
-
-
     public GameStatus getStatus() {
         return status;
     }
@@ -54,12 +41,10 @@ public class Game {
     public double getNormalprice() {
         return normalprice;
     }
-    
-   
 
     @Override
     public String toString() {
-        return "Game{" + "id=" + id + ", title=" + title + ", price=" + specialprice + '}' ;
+        return "Game{title=" + title + ", price=" + specialprice + '}';
     }
 
     public String getTitle() {
@@ -73,9 +58,4 @@ public class Game {
 //    public long getId() {
 //        return id;
 //    }
-
-
-
-    
-    
 }
