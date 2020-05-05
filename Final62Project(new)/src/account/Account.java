@@ -23,6 +23,14 @@ public abstract class Account {
         this.status = AccountStatus.ACTIVE;
     }
 
-    
+ 
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
 }
