@@ -74,9 +74,7 @@ public class Game {
         return id;
     }
 
-    public double getSpecialprice() {
-        return specialprice;
-    }
+
 
     
     
