@@ -19,8 +19,9 @@ public class AdminAccount extends Account {
         DBmanager.seeDataofAllCustomer(this);
     }
     
-    public void setCustomerStatusTo(CustomerAccount ac,AccountStatus status){
+    public void setCustomerStatusTo(CustomerAccount ac,AccountStatus status,long id){
         ac.setStatus(this,status);
+        DBmanager.updateStatus(ac,id);
     }
     
 

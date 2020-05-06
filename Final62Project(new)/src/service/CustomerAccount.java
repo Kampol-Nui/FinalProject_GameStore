@@ -22,19 +22,19 @@ public class CustomerAccount extends Account {
 //        this.genID();
 //
 //    }
-    public CustomerAccount(String username, String password, AccountStatus status) {
+    public CustomerAccount(String username, String password) {
         super(username, password);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
-        this.status = status;
+        this.status = AccountStatus.ACTIVE;
     }
 
-    public CustomerAccount(long id, String username, String password, AccountStatus accountStatus) {
+    public CustomerAccount(long id, String username, String password) {
         super(username, password);
         this.myCart = new Cart();
         this.myLibrary = new GameLibrary(this);
         this.uniqueId = id;
-        this.status = accountStatus;
+        this.status = AccountStatus.ACTIVE;
     }
 
     public void genID() {
@@ -106,6 +106,7 @@ public class CustomerAccount extends Account {
 
     public void setStatus(AdminAccount admin,AccountStatus status) {
         this.status = status;
+        
     }
 
     public AccountStatus getStatus() {

@@ -37,26 +37,22 @@ public class ReadWritePurchaseHistoryTranscription {
     public static void writePurchaseHistory(CustomerAccount ac) {
         try (Connection con = DBconnection.getConnecting();
                 Statement stm = con.createStatement();
-                
-                FileWriter fwt = new FileWriter("Purchasehistory"+"_"+ac.getUsername()+".txt");
-                BufferedWriter out = new BufferedWriter(fwt)
-                ) {
+                FileWriter fwt = new FileWriter("Purchasehistory" + "_" + ac.getUniqueId() + ".txt");
+                BufferedWriter out = new BufferedWriter(fwt)) {
             ResultSet rs = null;
             for (int i = 0; i < ac.getMyCart().getItemInCart().size(); i++) {
-                rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId()+"and GAME='"+ac.getMyCart().getItemInCart().get(i).getTitle()+"'");
-            while (rs.next()) {
-                String timestamp = rs.getString("TIMESTAMP");
-                long id = rs.getLong("ID");
-                String username = rs.getString("USERNAME");
-                String game = rs.getString("GAME");
-                double totalprice = rs.getDouble("TOTALPRICE");
-                double mymoney = rs.getDouble("MYMONEY");
-                
-                out.write(timestamp + " " + id + " " + username + " " + game + " " + totalprice + " " + mymoney + "\n");
+                rs = stm.executeQuery("SELECT * FROM PURCHASEHISTORY WHERE id=" + ac.getUniqueId() + "and GAME='" + ac.getMyCart().getItemInCart().get(i).getTitle() + "'");
+                while (rs.next()) {
+                    String timestamp = rs.getString("TIMESTAMP");
+                    long id = rs.getLong("ID");
+                    String username = rs.getString("USERNAME");
+                    String game = rs.getString("GAME");
+                    double totalprice = rs.getDouble("TOTALPRICE");
+                    double mymoney = rs.getDouble("MYMONEY");
+                    out.write(timestamp + " " + id + " " + username + " " + game + " " + totalprice + " " + mymoney + "\n");
+                }
+
             }
-                
-            }
-            
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -70,16 +66,15 @@ public class ReadWritePurchaseHistoryTranscription {
 
     public static void readPurchaseHistory(CustomerAccount ac) {
         try (
-                FileReader frd = new FileReader("Purchasehistory"+"_"+ac.getUsername()+".txt");
-                BufferedReader rdr = new BufferedReader(frd)
-                ) {
+                FileReader frd = new FileReader("Purchasehistory" + "_" + ac.getUniqueId() + ".txt");
+                BufferedReader rdr = new BufferedReader(frd)) {
             String line;
             while ((line = rdr.readLine()) != null) {
                 System.out.println(line);
             }
 //            }
         } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("หาไฟล์ไม่เจอ");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

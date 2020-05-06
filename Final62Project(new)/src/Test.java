@@ -1,9 +1,8 @@
 
 //import io.AllCustomer;
+import account.AccountStatus;
 import service.AdminAccount;
 
-import account.AccountStatus;
-import admin.io.ReadWritePurchaseHistoryTranscription;
 import dataaccess.DBmanager;
 import service.GameStore;
 import game.Game;
@@ -23,7 +22,7 @@ import service.CustomerAccount;
 public class Test {
     //static GameStore g1 = new GameStore("EPRIC");
 
-    static CustomerAccount customer = new CustomerAccount(null, null, AccountStatus.ACTIVE);
+    static CustomerAccount customer = new CustomerAccount(null, null);
     static int choice;
     static String mainMenu = "Menu:\n"
             + "1. Register\n"
@@ -63,7 +62,7 @@ public class Test {
                     System.out.print("Input your password: ");
                     password = input.next();
                     System.out.println("Registered\n");
-                    customer = new CustomerAccount(username, password, AccountStatus.ACTIVE);
+                    customer = new CustomerAccount(username, password);
                     customer.genID();
                     //customerAccount.callKeepCustomerInfo();
                     break;
@@ -101,66 +100,11 @@ public class Test {
 
         mainMenu();
 
-//   do {
-//            System.out.print(mainMenu);
-//            choice = input.nextInt();
-//
-//            switch (choice) {
-//                case 1: {
-//                    String phone = null;
-//                    String email = null;
-//                    String name = null;
-//                    String username = null;
-//                    String password = null;
-//                    System.out.print("Input your name: ");
-//                    name = input.next();
-//                    System.out.print("Input your email: ");
-//                    email = input.next();
-//                    System.out.print("Input your phone: ");
-//                    phone = input.next();
-//                    System.out.print("Input your username: ");
-//                    username = input.next();
-//                    System.out.print("Input your password: ");
-//                    password = input.next();
-//                    System.out.println("Registered\n");   
-//                    customer = new CustomerAccount(username, password, AccountStatus.ACTIVE);
-//                    customer.genID();
-//                    //customerAccount.callKeepCustomerInfo();
-//                    break;
-//                }
-//                case 2: {
-//                    
-//                    String username = null;
-//                    String password = null;
-//                    System.out.print("Input your username: ");
-//                    username = input.next();
-//                    System.out.print("Input your password: ");
-//                    password = input.next();
-//                    if(DBmanager.loginCustomer(username, password)==false){
-//                        System.out.println("Wrong Username or Password");
-//                    }else{
-//                    //customerMenu(DBmanager.getObjectCustomerFrom(username, password));
-//                    customer = DBmanager.getObjectCustomerFrom(username, password);
-//                    
-//                    //customerMenu(customerAccount);
-//                    }
-//                    break;
-//                }
-//                case 0: {
-//                    break;
-//                }
-//
-//            }
-//        } while (choice != 0);
-//        CustomerAccount cus1 = new CustomerAccount("Kampol", "kkkkddd", AccountStatus.ACTIVE);
-//        CustomerAccount customer = new CustomerAccount("Jiwview", "thisispassword", AccountStatus.ACTIVE);
-//        CustomerAccount cus3 = new CustomerAccount("John", "Wick", AccountStatus.ACTIVE);
-//        cus1.genID();
-//        customer.genID();
+
         AdminAccount admin = new AdminAccount("NobodyFound", "007");
         AdminAccount admin2 = new AdminAccount("ADM", "123456789");
         
-        admin.setCustomerStatusTo(customer, AccountStatus.BLACKLISTED);
+        admin.setCustomerStatusTo(customer, AccountStatus.BLACKLISTED,100000004);
         
         GameStore gameStore = new GameStore("EPRICK");
 

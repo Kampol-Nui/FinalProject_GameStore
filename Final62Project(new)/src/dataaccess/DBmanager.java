@@ -9,25 +9,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.AdminAccount;
 import service.CustomerAccount;
-import service.GameStore;
-
 
 public class DBmanager {
 
     public static void keepCustomerInfo(CustomerAccount ac) {
-        String sql1 = "INSERT INTO CUSTOMERACCOUNT " + "(id,username,password,mymoney)" + "VALUES(?,?,?,?)";
-        String sql2 = "INSERT INTO PERSONINFO " + "(name,email,phone)" + "VALUES(?,?,?)";
+        String sql1 = "INSERT INTO CUSTOMERACCOUNT " + "(id,username,password,mymoney,status)" + "VALUES(?,?,?,?,?)";
+
         try (Connection conn = DBconnection.getConnecting();) {
             try (PreparedStatement pstm = conn.prepareStatement(sql1);) {
                 pstm.setDouble(1, ac.getUniqueId());
                 pstm.setString(2, ac.getUsername());
                 pstm.setString(3, ac.getPassword());
                 pstm.setDouble(4, ac.getMyMoney());
+                pstm.setString(5, ac.getStatus().name());
                 pstm.executeUpdate();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
@@ -37,7 +35,6 @@ public class DBmanager {
             System.out.println(ex.getMessage());
         }
     }
-    
 
     public static void topupMoney(CustomerAccount ac) {
         double lastMoney;
@@ -50,7 +47,7 @@ public class DBmanager {
                 stm.setLong(2, ac.getUniqueId());
                 stm.setString(3, ac.getUsername());
                 stm.setDouble(4, ac.getTopupMoney());
-               
+
                 stm.executeUpdate();
                 lastMoney = ac.getTopupMoney() + selectLastMoney(ac);
                 String sql2 = "UPDATE CUSTOMERACCOUNT set MYMONEY=" + lastMoney + " WHERE id =" + ac.getUniqueId();
@@ -62,11 +59,11 @@ public class DBmanager {
                     System.out.println(ex.getMessage());
                 }
             } catch (SQLException ex) {
-               System.out.println(ex.getMessage());
+                System.out.println(ex.getMessage());
             }
         } catch (SQLException ex) {
-           System.out.println(ex.getMessage());
-        } 
+            System.out.println(ex.getMessage());
+        }
     }
 
     public static void selectTablePurchaseHistory(CustomerAccount ac) {
@@ -158,6 +155,20 @@ public class DBmanager {
         return money;
     }
 
+    public static void updateStatus(CustomerAccount ac,long customerId) {
+        try (Connection con = DBconnection.getConnecting();) {
+            String sql2 = "UPDATE CUSTOMERACCOUNT set Status='" + ac.getStatus().name() +"'"+ " WHERE id =" + customerId;
+            try (Statement stm = con.createStatement();) {
+                stm.executeUpdate(sql2);
+                System.out.println("อัพเดตสถานะแล้ว");
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());;
+        }
+    }
+
     public static void createTable() {
         try (Connection con = dataaccess.DBconnection.getConnecting();
                 Statement stm = con.createStatement();) {
@@ -183,7 +194,7 @@ public class DBmanager {
             }
             //try {stm.executeUpdate("CREATE TABLE customer (cus_id INT NOT NULL, cus_name VARCHAR(100),PRIMARY KEY (cus_id))");} catch (SQLException ex) {} 
             try {
-                stm.executeUpdate("CREATE TABLE CUSTOMERACCOUNT (ID BIGINT not null primary key,USERNAME VARCHAR(50),PASSWORD VARCHAR(50),MYMONEY DOUBLE)");
+                stm.executeUpdate("CREATE TABLE CUSTOMERACCOUNT (ID BIGINT not null primary key,USERNAME VARCHAR(50),PASSWORD VARCHAR(50),MYMONEY DOUBLE,STATUS VARCHAR(1000))");
             } catch (SQLException ex) {
             }
             try {
@@ -213,7 +224,7 @@ public class DBmanager {
     }
 
     public static void seeDataofAllCustomer(AdminAccount ac) {
-        
+
         long id = 0;
         String username = null;
         String password = null;
@@ -224,16 +235,17 @@ public class DBmanager {
 
             String query = "SELECT * FROM CUSTOMERACCOUNT";
             rs = stm.executeQuery(query);
-            System.out.println("========================================================================");
-            System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY"));
-            System.out.println("========================================================================");
+            System.out.println("=======================================================================================");
+            System.out.println(String.format("%10s %s %20s %s %20s %s %10s %s %10s ", "ID", "|", "USERNAME", "|", "PASSWORD", "|", "MYMONEY", "|", "STATUS"));
+            System.out.println("=======================================================================================");
             while (rs.next()) {
                 id = rs.getLong("ID");
                 username = rs.getString("USERNAME");
                 password = rs.getString("PASSWORD");
                 myMoney = rs.getDouble("MYMONEY");
-                System.out.println(String.format("%10s %s %20s %s %20s %s %10s ", id, "|", username, "|", password, "|", myMoney));
-                System.out.println("------------------------------------------------------------------------");
+                String status = rs.getString("Status");
+                System.out.println(String.format("%10s %s %20s %s %20s %s %10s %s %10s ", id, "|", username, "|", password, "|", myMoney, "|", status));
+                System.out.println("-----------------------------------------------------------------------------------");
             }
 
         } catch (SQLException ex) {
@@ -264,6 +276,28 @@ public class DBmanager {
         return false;
     }
 
+    public static boolean selectCustomerAccountStatus(CustomerAccount ac) {
+        String status = null;
+        try (Connection con = DBconnection.getConnecting();
+                Statement stm = con.createStatement();) {
+            ResultSet rs = null;
+
+            String query = "SELECT * FROM CUSTOMERACCOUNT WHERE Status ='" + ac.getStatus().name() + "'";
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                status = rs.getString("status");
+                if (status.equals(AccountStatus.BLACKLISTED.name())) {
+                    return false;
+                }
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return true;
+    }
+
     public static long incrementLastCustomerID() {
         long id = 1000000000;
         try (Connection con = DBconnection.getConnecting();
@@ -271,7 +305,7 @@ public class DBmanager {
             ResultSet rs = null;
 
             String query = ("SELECT MAX(ID) AS MAXID FROM CUSTOMERACCOUNT");
-            
+
             rs = stm.executeQuery(query);
 
             if (rs.next()) {
@@ -279,13 +313,11 @@ public class DBmanager {
                 id++;
             }
 
-
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
         return id;
     }
-    
 
     public static void addGametoDatabase(CustomerAccount ac) {
         String sql1 = "INSERT INTO LIBRARY " + "(id,game)" + "VALUES(?,?)";
@@ -336,7 +368,7 @@ public class DBmanager {
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        return new CustomerAccount(id,username,password,AccountStatus.ACTIVE);
+        return new CustomerAccount(id, username, password);
     }
 
     public static int checkRepeatGameInLibrary(CustomerAccount ac) {
@@ -364,7 +396,6 @@ public class DBmanager {
         }
         return 1;
     }
-
 
     public static void listRecentLibrary(CustomerAccount ac) {
         String sql1 = "SELECT * FROM LIBRARY WHERE ID=" + ac.getUniqueId();

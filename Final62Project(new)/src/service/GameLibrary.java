@@ -1,6 +1,5 @@
 package service;
 
-
 import account.AccountStatus;
 import admin.io.ReadWritePurchaseHistoryTranscription;
 import game.Game;
@@ -18,16 +17,14 @@ public class GameLibrary {
     }
 
     public void addGameFromCartToLibrary() {
-        if(this.ac.getStatus()==AccountStatus.BLACKLISTED){
-            System.out.println("Your Account is Banned");
-        }
-        else if(DBmanager.checkRepeatGameInLibrary(ac) == -1){
+        if (DBmanager.selectCustomerAccountStatus(ac) == false) {
+            System.out.println("BANNED");
+        } else if (DBmanager.checkRepeatGameInLibrary(ac) == -1) {
             System.out.println("คุณมีเกมนี้อยู่แล้ว");
-                      
-        }else if(DBmanager.checkRepeatGameInLibrary(ac) == 0){
+
+        } else if (DBmanager.checkRepeatGameInLibrary(ac) == 0) {
             System.out.println("คุณไม่มีเกมที่จะเพิ่มลงในไลบราลี่");
-        }
-        else if (ac.getMyCart().getTotalprice() <= DBmanager.selectLastMoney(ac)) {
+        } else if (ac.getMyCart().getTotalprice() <= DBmanager.selectLastMoney(ac)) {
             ac.getMyCart().calculateTotalPrice();
             this.myGameLibrary = (ArrayList<Game>) ac.getMyCart().itemInCart.clone();
             double oldmoney = dataaccess.DBmanager.selectLastMoney(ac);
@@ -41,7 +38,5 @@ public class GameLibrary {
         }
 
     }
-
-
 
 }
